@@ -99,7 +99,14 @@ export const API_URL_MCH_PAYCONFIGS_LIST = '/api/mch/payConfigs'
 export const API_URL_MCH_PAYPASSAGE_LIST = '/api/mch/payPassages'
 /** 转账订单管理 **/
 export const API_URL_TRANSFER_ORDER_LIST = '/api/transferOrders'
-
+/** 核销订单管理 **/
+export const API_URL_RESELLER_ORDER_LIST = '/api/resellerOrders'
+/** 小号管理 **/
+export const API_URL_PRETENDER_LIST = '/api/pretenderAccounts'
+/** 小号订单管理 **/
+export const API_URL_PRETENDER_ORDER_LIST = '/api/pretenderOrders'
+/** 渠道搜索订单管理 **/
+export const API_URL_PRETENDER_ORDER_SEARCH = '/api/pretenderOrders/searchByResellerOrder'
 /** 上传图片/文件地址 **/
 export const upload = {
   avatar: request.baseUrl + '/api/ossFiles/avatar',
