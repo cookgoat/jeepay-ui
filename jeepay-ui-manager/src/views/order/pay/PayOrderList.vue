@@ -72,7 +72,7 @@
         :tableColumns="tableColumns"
         :searchData="searchData"
         rowKey="payOrderId"
-        :scrollX="1350"
+        :scrollX="1550"
       >
         <template slot="amountSlot" slot-scope="{record}"><b>￥{{ record.amount/100 }}</b></template> <!-- 自定义插槽 -->
         <template slot="stateSlot" slot-scope="{record}">
@@ -398,6 +398,8 @@ const tableColumns = [
   { key: 'mchFeeAmount', dataIndex: 'mchFeeAmount', title: '手续费', customRender: (text) => '￥' + (text / 100).toFixed(2) },
   { key: 'mchName', title: '商户名称', dataIndex: 'mchName', ellipsis: true, width: '100px' },
   { key: 'payOrderId', title: '支付订单号', dataIndex: 'payOrderId' },
+  { key: 'channelOrderNo', title: '渠道订单号', dataIndex: 'channelOrderNo', width: '100px' },
+  { key: 'resellerOrderNo', title: '核销订单号', dataIndex: 'resellerOrderNo', width: '100px' },
   { key: 'mchOrderNo', title: '商户订单号', dataIndex: 'mchOrderNo' },
   { key: 'wayName', title: '支付方式', dataIndex: 'wayName', width: 150 },
   { key: 'state', title: '支付状态', scopedSlots: { customRender: 'stateSlot' }, width: 100 },

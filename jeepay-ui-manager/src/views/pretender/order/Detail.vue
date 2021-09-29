@@ -112,13 +112,20 @@
       </a-row>
 
       <a-row justify="space-between" type="flex">
+
         <a-col :span="10">
-          <a-descriptions>
-            <a-descriptions-item label="回调时间">
-              {{ detailData.gmtNotify }}
+          <a-descriptions v-if="detailData.productType === 'JD_E_CARD'">
+            <a-descriptions-item label="充值产品类型">
+              {{ '京东E卡' }}
+            </a-descriptions-item>
+          </a-descriptions>
+          <a-descriptions v-if="detailData.productType === 'CTRIP'">
+            <a-descriptions-item label="充值产品类型">
+              {{ '携程任我行' }}
             </a-descriptions-item>
           </a-descriptions>
         </a-col>
+
         <a-col :span="10">
           <a-descriptions>
             <a-descriptions-item label=" 过期时间">
@@ -145,6 +152,17 @@
         </a-col>
       </a-row>
       <a-row justify="space-between" type="flex">
+        <a-col :span="10">
+          <a-descriptions>
+            <a-descriptions-item label="回调时间">
+              {{ detailData.gmtNotify }}
+            </a-descriptions-item>
+          </a-descriptions>
+
+        </a-col>
+      </a-row>
+
+      <a-row justify="space-between" type="flex">
         <a-col :span="40">
           <a-descriptions>
             <a-descriptions-item label="生成的URL连接">
@@ -153,6 +171,7 @@
           </a-descriptions>
         </a-col>
       </a-row>
+
     </a-form-model>
   </a-drawer>
 </template>

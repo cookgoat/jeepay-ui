@@ -39,9 +39,6 @@
             </span>
           </div>
         </a-form>
-        <div>
-          <a-button icon="plus" v-if="$access('ENT_ISV_INFO_ADD')" type="primary" @click="addFunc" class="mg-b-30">添加</a-button>
-        </div>
       </div>
 
       <!-- 列表渲染 -->
@@ -83,9 +80,9 @@
 
         <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
           <JeepayTableColumns>
-            <a-button type="link" v-if="$access('ENT_ISV_INFO_EDIT')" @click="detailFunc(record.id)">详情</a-button>
-            <a-button type="link" v-if="$access('ENT_ISV_INFO_EDIT')" @click="editFunc(record.id)">修改</a-button>
-            <a-button type="link" v-if="$access('ENT_ISV_INFO_DEL')" style="color: red" @click="delFunc(record.id)">删除</a-button>
+            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW')" @click="detailFunc(record.id)">详情</a-button>
+            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_EDIT')" @click="editFunc(record.id)">修改</a-button>
+            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_DELETE')" style="color: red" @click="delFunc(record.id)">删除</a-button>
           </JeepayTableColumns>
         </template>
       </JeepayTableExpand>
@@ -209,9 +206,7 @@ export default {
     searchFunc: function () { // 点击【查询】按钮点击事件
       this.$refs.infoTable.refTable(true)
     },
-    addFunc: function () { // 业务通用【新增】 函数
-      this.$refs.uploadInfo.show()
-    },
+
     editFunc: function (recordId) { // 业务通用【修改】 函数
       this.$refs.infoAddOrEdit.show(recordId)
     },

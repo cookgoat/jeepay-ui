@@ -37,6 +37,11 @@ export const asyncRouteDefine = {
   'SysLogPage': { defaultPath: '/log', component: () => import('@/views/sys/log/SysLog') }, // 系统日志
   'ResellerOrderGroupPage': { defaultPath: '/resellerOrderGroup', component: () => import('@/views/reseller/ResellerList') }, // 核销列表
   'PretenderAccountGroupPage': { defaultPath: '/pretenderAccountGroup', component: () => import('@/views/pretender/PretenderList') }, // 伪装渠道列表
-  'PretenderOrderGroupPage': { defaultPath: '/pretenderOrderGroup', component: () => import('@/views/pretender/order/OrderList') } // 伪装渠道列表
+  'PretenderOrderGroupPage': { defaultPath: '/pretenderOrderGroup', component: () => import('@/views/pretender/order/OrderList') }, // 伪装渠道列表
+  'pretenderProductGroupPage': { defaultPath: '/pretenderProductGroup', component: () => import('@/views/pretender/product/product-list') }, // 伪装渠道列表
+  'ResellerAccountGroupPage': { defaultPath: '/resellerAccountGroup', component: () => import('@/views/reseller/account/AccountList') }, // 核销商管理
+  'ResellerFundAccountGroupPage': { defaultPath: '/resellerFundAccountGroup', component: () => import('@/views/reseller/resellerFundAccount/resellerFundAccountList') }, // 核销资金管理
+  'ResellerFundLineGroupPage': { defaultPath: '/resellerFundLineGroup', component: () => import('@/views/reseller/resellerFundAccount/resellerFundLineList') }, // 核销资金流水管理
+  'ResellerProductGroupPage': { defaultPath: '/resellerProductGroup', component: () => import('@/views/reseller/product/ProductList') } // 核销产品管理
 
 }

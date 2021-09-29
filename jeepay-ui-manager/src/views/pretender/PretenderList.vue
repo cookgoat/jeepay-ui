@@ -29,7 +29,7 @@
           </div>
         </a-form>
         <div>
-          <a-button icon="plus" v-if="$access('ENT_ISV_INFO_ADD')" type="primary" @click="addFunc" class="mg-b-30">添加</a-button>
+          <a-button icon="plus" v-if="$access('ENT_PRETENDER_ACCOUNT_GROUP_IMPORT')" type="primary" @click="addFunc" class="mg-b-30">添加</a-button>
         </div>
       </div>
 
@@ -58,8 +58,8 @@
         </template>
         <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
           <JeepayTableColumns>
-            <a-button type="link" v-if="$access('ENT_ISV_INFO_EDIT')" @click="detailFunc(record.id)">详情</a-button>
-            <a-button type="link" v-if="$access('ENT_ISV_INFO_DEL')" style="color: red" @click="delFunc(record.id)">删除</a-button>
+            <a-button type="link" v-if="$access('ENT_PRETENDER_ACCOUNT_GROUP_VIEW')" @click="detailFunc(record.id)">详情</a-button>
+            <a-button type="link" v-if="$access('ENT_PRETENDER_ACCOUNT_GROUP_DELETE')" style="color: red" @click="delFunc(record.id)">删除</a-button>
           </JeepayTableColumns>
         </template>
       </JeepayTable>

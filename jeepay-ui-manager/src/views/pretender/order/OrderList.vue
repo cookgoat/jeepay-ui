@@ -11,6 +11,12 @@
               </a-select>
             </a-form-item>
             <a-form-item label="" class="table-head-layout">
+              <a-select v-model="searchData.productType" placeholder="产品类型" default-value="">
+                <a-select-option value="JD_E_CARD">京东E卡</a-select-option>
+                <a-select-option value="CTRIP">携程任我行</a-select-option>
+              </a-select>
+            </a-form-item>
+            <a-form-item label="" class="table-head-layout">
               <a-select v-model="searchData.status" placeholder="状态" default-value="">
                 <a-select-option value="PAYING">支付中</a-select-option>
                 <a-select-option value="FINISH">完成支付</a-select-option>
@@ -85,7 +91,7 @@
         <template slot="gmtExpired" slot-scope="{record}"><b>{{ record.gmtExpired }}</b></template> <!-- 自定义插槽 -->
         <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
           <JeepayTableColumns>
-            <a-button type="link" v-if="$access('ENT_ISV_INFO_EDIT')" @click="detailFunc(record.id)">详情</a-button>
+            <a-button type="link" v-if="$access('ENT_PRETENDER_ORDER_GROUP_VIEW')" @click="detailFunc(record.id)">详情</a-button>
           </JeepayTableColumns>
         </template>
       </JeepayTable>
@@ -106,6 +112,7 @@ const tableColumns = [
 
   { key: 'id', width: '200px', title: 'ID', scopedSlots: { customRender: 'id' } },
   { key: 'bizType', width: '200px', title: '业务类型', scopedSlots: { customRender: 'bizType' } },
+  { key: 'productType', width: '150px', title: '产品类型', scopedSlots: { customRender: 'productType' } },
   { key: 'outTradeNo', width: '150px', title: '订单号', scopedSlots: { customRender: 'outTradeNo' } },
   { key: 'status', width: '150px', title: '状态', scopedSlots: { customRender: 'status' } },
   { key: 'pretenderAccountId', width: '150px', title: '伪装小号ID', scopedSlots: { customRender: 'pretenderAccountId' } },
@@ -115,7 +122,6 @@ const tableColumns = [
   { key: 'gmtNotify', width: '150px', title: '回调时间', scopedSlots: { customRender: 'gmtNotify' } },
   { key: 'matchResellerOrderNo', width: '150px', title: '核销商订单', scopedSlots: { customRender: 'matchResellerOrderNo' } },
   { key: 'ext', width: '150px', title: '扩展字段', scopedSlots: { customRender: 'ext' } },
-  { key: 'productType', width: '150px', title: '产品类型', scopedSlots: { customRender: 'productType' } },
   { key: 'gmtExpired', width: '150px', title: '过期时间', scopedSlots: { customRender: 'gmtExpired' } },
   { key: 'gmtCreate', width: '150px', title: '创建日期', scopedSlots: { customRender: 'gmtCreate' } },
   { key: 'op', title: '操作', width: '160px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }

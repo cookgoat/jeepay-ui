@@ -107,6 +107,19 @@ export const API_URL_PRETENDER_LIST = '/api/pretenderAccounts'
 export const API_URL_PRETENDER_ORDER_LIST = '/api/pretenderOrders'
 /** 渠道搜索订单管理 **/
 export const API_URL_PRETENDER_ORDER_SEARCH = '/api/pretenderOrders/searchByResellerOrder'
+/** 核销商管理 **/
+export const API_URL_RESELLER_LIST = '/api/resellers'
+/** 核销商产品 **/
+export const API_URL_RESELLER_PRODUCT_LIST = '/api/resellerProducts'
+
+/** 支付类型列表 **/
+export const API_URL_PRETENDER_PRODUCT_LIST = '/api/pretenderProduct'
+
+/** 核销资金 */
+export const API_URL_RESELLER_FUNDACCOUNT_LIST = '/api/resellerFundAccount'
+/** 核销流水 */
+export const API_URL_RESELLER_FUNDLINE_LIST = '/api/resellerFundLine'
+
 /** 上传图片/文件地址 **/
 export const upload = {
   avatar: request.baseUrl + '/api/ossFiles/avatar',
@@ -306,5 +319,21 @@ export function queryAlipayIsvsubMchAuthUrl (mchAppId) {
   return request.request({
     url: '/api/mch/payConfigs/alipayIsvsubMchAuthUrls/' + mchAppId,
     method: 'GET'
+  })
+}
+
+export function updateProduct (parameter) {
+  return request.request({
+    url: '/api/resellerProducts',
+    method: 'POST',
+    data: parameter
+  })
+}
+
+export function settleUpProduct (parameter) {
+  return request.request({
+    url: '/api/resellerProducts/settleUp',
+    method: 'POST',
+    data: parameter
   })
 }
