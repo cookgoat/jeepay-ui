@@ -55,6 +55,9 @@
                 <a-select-option value="3">分账任务已结束（状态请看分账记录）</a-select-option>
               </a-select>
             </a-form-item>
+            <a-form-item label="订单金额">
+              <a-input-number v-model="searchData.amountSearch" placeholder="请输入" :min="1" :max="9999999999999" />
+            </a-form-item>
             <span class="table-page-search-submitButtons">
               <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">搜索</a-button>
               <a-button style="margin-left: 8px" icon="reload" @click="() => this.searchData = {}">重置</a-button>
@@ -434,6 +437,10 @@ export default {
   },
   methods: {
     queryFunc () {
+      if (this.searchData.amountSearch && this.searchData.amountSearch !== '') {
+        this.searchData.amount = ''
+        this.searchData.amount = this.searchData.amountSearch * 100
+      }
       this.btnLoading = true
       this.$refs.infoTable.refTable(true)
     },
@@ -442,6 +449,10 @@ export default {
       return req.list(API_URL_PAY_ORDER_LIST, params)
     },
     searchFunc: function () { // 点击【查询】按钮点击事件
+      if (this.searchData.amountSearch && this.searchData.amountSearch !== '') {
+        this.searchData.amount = ''
+        this.searchData.amount = this.searchData.amountSearch * 100
+      }
       this.$refs.infoTable.refTable(true)
     },
 

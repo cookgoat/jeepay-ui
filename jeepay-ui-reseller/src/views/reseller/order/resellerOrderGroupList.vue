@@ -12,7 +12,7 @@
               </a-select>
             </a-form-item>
             <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount" v-model="searchData.chargeAccount" />
-            <a-input-number :placeholder="'充值金额'" v-model="searchData.amount" :min="1" :max="9999999999999" style="margin-right: 15px;"/>
+            <a-input-number :placeholder="'充值金额'" v-model="searchData.amountSearch" :min="1" :max="9999999999999" style="margin-right: 15px;"/>
             <jeepay-text-up :placeholder="'查询标志'" :msg="searchData.queryFlag" v-model="searchData.queryFlag" />
             <a-form-item label="" class="table-head-layout">
               <a-select v-model="searchData.orderStatus" placeholder="订单状态" default-value="">
@@ -138,8 +138,9 @@
                 this.searchData.createdEnd = dateString[1] // 结束时间
             },
             queryFunc () {
-              if (this.searchData.amount) {
-                this.searchData.amount = this.searchData.amount * 100
+              if (this.searchData.amountSearch) {
+                this.searchData.amount = ''
+                this.searchData.amount = this.searchData.amountSearch * 100
               }
               this.btnLoading = true
               this.$refs.infoTable.refTable(true)
@@ -161,8 +162,9 @@
             //     this.$refs.uploadInfo.show()
             // },
             searchFunc: function () { // 点击【查询】按钮点击事件
-              if (this.searchData.amount) {
-                this.searchData.amount = this.searchData.amount * 100
+              if (this.searchData.amountSearch) {
+                this.searchData.amount = ''
+                this.searchData.amount = this.searchData.amountSearch * 100
               }
                 this.$refs.infoTable.refTable(true)
             },

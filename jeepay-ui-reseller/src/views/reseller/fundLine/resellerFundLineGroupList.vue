@@ -17,9 +17,9 @@
               </a-range-picker>
             </a-form-item>
             <a-form-item label="金额起止">
-              <a-input-number v-model="searchData.amountStart" placeholder="请输入" :min="1" :max="9999999999999" />
+              <a-input-number v-model="searchData.amountStartSearch" placeholder="请输入" :min="1" :max="9999999999999" />
               -
-              <a-input-number v-model="searchData.amountEnd" placeholder="请输入" :min="1" :max="9999999999999" />
+              <a-input-number v-model="searchData.amountEndSearch" placeholder="请输入" :min="1" :max="9999999999999" />
             </a-form-item>
             <span class="table-page-search-submitButtons" style="margin-left: 20px;">
               <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">搜索</a-button>
@@ -108,11 +108,13 @@
                 this.searchData.endDate = dateString[1] // 结束时间
             },
             queryFunc () {
-                if (this.searchData.amountStart) {
-                    this.searchData.amountStart = this.searchData.amountStart * 100
+                if (this.searchData.amountStartSearch) {
+                  this.searchData.amountStart = ''
+                  this.searchData.amountStart = this.searchData.amountStartSearch * 100
                 }
-                if (this.searchData.amountEnd) {
-                    this.searchData.amountEnd = this.searchData.amountEnd * 100
+                if (this.searchData.amountEndSearch) {
+                  this.searchData.amountEnd = ''
+                  this.searchData.amountEnd = this.searchData.amountEndSearch * 100
                 }
                 this.btnLoading = true
                 this.$refs.infoTable.refTable(true)
@@ -134,13 +136,15 @@
             //     this.$refs.uploadInfo.show()
             // },
             searchFunc: function () { // 点击【查询】按钮点击事件
-              if (this.searchData.amountStart) {
-                this.searchData.amountStart = this.searchData.amountStart * 100
+              if (this.searchData.amountStartSearch) {
+                this.searchData.amountStart = ''
+                this.searchData.amountStart = this.searchData.amountStartSearch * 100
               }
-              if (this.searchData.amountEnd) {
-                this.searchData.amountEnd = this.searchData.amountEnd * 100
+              if (this.searchData.amountEndSearch) {
+                this.searchData.amountEnd = ''
+                this.searchData.amountEnd = this.searchData.amountEndSearch * 100
               }
-                this.$refs.infoTable.refTable(true)
+              this.$refs.infoTable.refTable(true)
             },
             detailFunc: function (recordId) { // 业务通用【详情】 函数
                 this.$refs.detailInfo.show(recordId)
