@@ -41,6 +41,7 @@
             >
                 <template slot="id" slot-scope="{record}"><b>{{ record.id.toString() }}</b></template> <!-- 自定义插槽 -->
                 <template slot="resellerNo" slot-scope="{record}"><b>{{ record.resellerNo }}</b></template> <!-- 自定义插槽 -->
+                 <template slot="resellerName" slot-scope="{record}"><b>{{ record.resellerName}}</b></template> <!-- 自定义插槽 -->
                 <template slot="allAmount" slot-scope="{record}"><b>{{ '￥'+record.allAmount / 100 }}</b></template> <!-- 自定义插槽 -->
                 <template slot="recoveriesAllAmount" slot-scope="{record}"><b>{{ '￥'+record.recoveriesAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
                 <template slot="finishedAllAmount" slot-scope="{record}"><b>{{ '￥'+record.finishedAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
@@ -70,6 +71,7 @@
 
         { key: 'id', width: '200px', title: 'ID', scopedSlots: { customRender: 'id' } },
         { key: 'resellerNo', width: '200px', title: '核销商号', scopedSlots: { customRender: 'resellerNo' } },
+        { key: 'resellerName', width: '200px', title: '核销商名', scopedSlots: { customRender: 'resellerName' } },
         { key: 'allAmount', width: '200px', title: '订单总金额', scopedSlots: { customRender: 'allAmount' } },
         { key: 'recoveriesAllAmount', width: '200px', title: '回款金额', scopedSlots: { customRender: 'recoveriesAllAmount' } },
         { key: 'finishedAllAmount', width: '200px', title: '完成订单总金额', scopedSlots: { customRender: 'finishedAllAmount' } },

@@ -43,6 +43,7 @@
       >
         <template slot="id" slot-scope="{record}"><b>{{ record.id.toString() }}</b></template> <!-- 自定义插槽 -->
         <template slot="resellerNo" slot-scope="{record}"><b>{{ record.resellerNo }}</b></template> <!-- 自定义插槽 -->
+        <template slot="resellerName" slot-scope="{record}"><b>{{ record.resellerName}}</b></template> <!-- 自定义插槽 -->
         <template slot="beforeRecoveriesAmount" slot-scope="{record}"><b>{{ '￥'+record.beforeRecoveriesAmount / 100 }}</b></template> <!-- 自定义插槽 -->
         <template slot="changeRecoveriesAmount" slot-scope="{record}"><b>{{ '￥'+record.changeRecoveriesAmount / 100 }}</b></template> <!-- 自定义插槽 -->
         <template slot="afterRecoveriesAmount" slot-scope="{record}"><b>{{ '￥'+record.afterRecoveriesAmount / 100 }}</b></template> <!-- 自定义插槽 -->
@@ -74,6 +75,7 @@
 
         { key: 'id', width: '200px', title: 'ID', scopedSlots: { customRender: 'id' } },
         { key: 'resellerNo', width: '200px', title: '核销商号', scopedSlots: { customRender: 'resellerNo' } },
+        { key: 'resellerName', width: '200px', title: '核销商名', scopedSlots: { customRender: 'resellerName' } },
         { key: 'beforeRecoveriesAmount', width: '200px', title: '变更前回款金额', scopedSlots: { customRender: 'beforeRecoveriesAmount' } },
         { key: 'changeRecoveriesAmount', width: '200px', title: '变更金额', scopedSlots: { customRender: 'changeRecoveriesAmount' } },
         { key: 'afterRecoveriesAmount', width: '200px', title: '变更后回款金额', scopedSlots: { customRender: 'afterRecoveriesAmount' } },
