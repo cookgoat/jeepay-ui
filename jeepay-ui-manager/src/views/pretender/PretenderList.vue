@@ -4,14 +4,22 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline" class="table-head-ground">
           <div class="table-layer">
-            <jeepay-text-up :placeholder="'账号'" :msg="searchData.account" v-model="searchData.account" />
+          <jeepay-text-up :placeholder="'ID'" :msg="searchData.id" v-model="searchData.id" />
+            <jeepay-text-up :placeholder="'cookie'" :msg="searchData.certificate" v-model="searchData.certificate" />
+            <a-form-item label="" class="table-head-layout">
+              <a-select v-model="searchData.status" placeholder="状态" default-value="">
+                <a-select-option value="AVAILABLE">启用</a-select-option>
+                <a-select-option value="UNAVAILABLE">禁用</a-select-option>
+                <a-select-option value="2">异常</a-select-option>
+                <a-select-option value="3">休眠</a-select-option>
+              </a-select>
+            </a-form-item>
             <a-form-item label="" class="table-head-layout">
               <a-select v-model="searchData.bizType" placeholder="业务类型" default-value="">
                 <a-select-option value="PROPERTY_CREDIT">资和信</a-select-option>
               </a-select>
             </a-form-item>
-            <jeepay-text-up :placeholder="'ID'" :msg="searchData.id" v-model="searchData.id" />
-            <jeepay-text-up :placeholder="'登录凭证'" :msg="searchData.certificate" v-model="searchData.certificate" />
+            <jeepay-text-up :placeholder="'登录凭证'" :msg="searchData.certificate" v-model="searchData.certificate" /> -->
             <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
               <a-range-picker
                 @change="onChange"
@@ -47,12 +55,13 @@
         <template slot="id" slot-scope="{record}"><b>{{ record.id.toString() }}</b></template> <!-- 自定义插槽 -->
         <template slot="status" slot-scope="{record}" >
           <a-tag :color="record.status === 'AVAILABLE'?'green':record.status === 'UNAVAILABLE'?'orange':'volcano'">
-            {{ record.status === 'AVAILABLE'?'有效':record.status === 'UNAVAILABLE'?'无效':'未知' }}
+            {{ record.status === 'AVAILABLE'?'启用':record.status === 'UNAVAILABLE'?'无效':'未知' }}
           </a-tag>
         </template> <!-- 自定义插槽 -->
         <template slot="gmtCreate" slot-scope="{record}"><b>{{ record.gmtCreate }}</b></template> <!-- 自定义插槽 -->
         <template slot="account" slot-scope="{record}"><b>{{ record.account }}</b></template> <!-- 自定义插槽 -->
         <template slot="chargeAccount" slot-scope="{record}"><b>{{ record.chargeAccount }}</b></template> <!-- 自定义插槽 -->
+        <template slot="certificate" slot-scope="{record}"><b>{{ record.certificate }}</b></template> <!-- 自定义插槽 -->
         <template slot="bizType" slot-scope="{record}">
           <b v-if="record.bizType ==='PROPERTY_CREDIT'">资和信</b>
         </template>
@@ -81,10 +90,11 @@ const tableColumns = [
 
   { key: 'id', width: '200px', title: 'ID', scopedSlots: { customRender: 'id' } },
   { key: 'bizType', width: '200px', title: '业务类型', scopedSlots: { customRender: 'bizType' } },
-  { key: 'account', width: '150px', title: '账号', scopedSlots: { customRender: 'account' } },
+  // { key: 'account', width: '150px', title: '账号', scopedSlots: { customRender: 'account' } },
+  { key: 'certificate', width: '180px', title: 'cookie', scopedSlots: { customRender: 'certificate' } },
+  // { key: 'account', width: '150px', title: 'cookie', scopedSlots: { customRender: 'certificate' } },
   { key: 'status', width: '150px', title: '状态', scopedSlots: { customRender: 'status' } },
-  // { key: 'certificate', width: '150px', title: '登录凭证', scopedSlots: { customRender: 'certificate' } },
-  { key: 'gmtCreate', width: '150px', title: '创建日期', scopedSlots: { customRender: 'gmtCreate' } },
+  { key: 'gmtCreate', width: '180px', title: '创建日期', scopedSlots: { customRender: 'gmtCreate' } },
   { key: 'op', title: '操作', width: '260px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }
 ]
 

@@ -4,20 +4,33 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline" class="table-head-ground">
           <div class="table-layer">
-            <jeepay-text-up :placeholder="'订单号'" :msg="searchData.orderNo" v-model="searchData.orderNo" />
+            <jeepay-text-up :placeholder="'核销商ID'" :msg="searchData.resellerNo" v-model="searchData.orderNo" />
+            <jeepay-text-up :placeholder="'核销商名称'" :msg="searchData.resellerName" v-model="searchData.orderNo" />
+            <jeepay-text-up :placeholder="'官方单号'" :msg="searchData.orderNo" v-model="searchData.orderNo" />
             <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.orderStatus" placeholder="订单状态" default-value="">
-                <a-select-option value="PAYING">支付中</a-select-option>
-                <a-select-option value="WAITING_PAY">待支付</a-select-option>
-                <a-select-option value="FINISH">支付成功</a-select-option>
+              <a-select v-model="searchData.amount" placeholder="金额" default-value="">
+                <a-select-option value="10000">100</a-select-option>
+                <a-select-option value="20000">200</a-select-option>
+                <a-select-option value="50000">500</a-select-option>
+                <a-select-option value="100000">1000</a-select-option>
               </a-select>
             </a-form-item>
-            <jeepay-text-up :placeholder="'核销商ID'" :msg="searchData.resellerId" v-model="searchData.resellerId" />
+            <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount" v-model="searchData.chargeAccount" />
+            <a-form-item label="" class="table-head-layout">
+              <a-select v-model="searchData.orderStatus" placeholder="订单状态" default-value="">
+                <a-select-option value="WAITING_PAY">待支付</a-select-option>
+                <a-select-option value="PAYING">支付中</a-select-option>
+                <a-select-option value="FINISH">充值中</a-select-option>
+                <a-select-option value="FINISH">已到账</a-select-option>
+                <a-select-option value="FINISH">已禁用</a-select-option>
+              </a-select>
+            </a-form-item>
+            <!-- <jeepay-text-up :placeholder="'核销商ID'" :msg="searchData.resellerId" v-model="searchData.resellerId" />
             <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount" v-model="searchData.chargeAccount" />
             <jeepay-text-up :placeholder="'支付订单号'" :msg="searchData.matchOutTradeNo" v-model="searchData.matchOutTradeNo" />
-            <jeepay-text-up :placeholder="'查询标志'" :msg="searchData.queryFlag" v-model="searchData.queryFlag" />
+            <jeepay-text-up :placeholder="'查询标志'" :msg="searchData.queryFlag" v-model="searchData.queryFlag" /> -->
             <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.productType" placeholder="充值产品类型" default-value="">
+              <a-select v-model="searchData.productType" placeholder="业务类型" default-value="">
                 <a-select-option value="JD_E_CARD">京东E卡</a-select-option>
                 <a-select-option value="CTRIP">携程任我行</a-select-option>
               </a-select>
@@ -56,7 +69,8 @@
         rowKey="orderNo"
       >
         <template slot="orderNo" slot-scope="{record}"><b>{{ record.orderNo }}</b></template> <!-- 自定义插槽 -->
-        <template slot="id" slot-scope="{record}"><b>{{ record.id.toString() }}</b></template> <!-- 自定义插槽 -->
+        <template slot="resellerNo" slot-scope="{record}"><b>{{ record.resellerNo }}</b></template> <!-- 自定义插槽 -->
+        <template slot="resellerName" slot-scope="{record}"><b>{{ record.resellerName }}</b></template> <!-- 自定义插槽 -->
         <template slot="chargeAccountType" slot-scope="{record}" >
           <span v-if="record.chargeAccountType === 'MOBILE'">{{ '手机号' }}</span>
           <span v-if="record.chargeAccountType === 'PLATFORM_ACCOUNT'">{{ '他方平台账号' }}</span>
@@ -82,7 +96,9 @@
           <JeepayTableColumns>
             <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW')" @click="detailFunc(record.id)">详情</a-button>
             <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_EDIT')" @click="editFunc(record.id)">修改</a-button>
-            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_DELETE')" style="color: red" @click="delFunc(record.id)">删除</a-button>
+            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_EDIT')" >禁用</a-button>
+            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_EDIT')" >启用</a-button>
+            <!-- <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_DELETE')" style="color: red" @click="delFunc(record.id)">删除</a-button> -->
           </JeepayTableColumns>
         </template>
       </JeepayTableExpand>
@@ -108,19 +124,18 @@ import Detail from './Detail'
 
 // eslint-disable-next-line no-unused-vars
 const tableColumns = [
-
-  { key: 'id', width: '200px', title: 'ID', scopedSlots: { customRender: 'id' } },
-  { key: 'orderNo', width: '200px', title: '订单号', scopedSlots: { customRender: 'orderNo' } },
+  { key: 'orderNo', width: '200px', title: '核销订单号', scopedSlots: { customRender: 'orderNo' } },
+  { key: 'resellerNo', width: '200px', title: '核销商ID', scopedSlots: { customRender: 'resellerNo' } },
+  { key: 'resellerName', width: '150px', title: '核销商名称', scopedSlots: { customRender: 'resellerName' } },
   { key: 'amount', width: '150px', title: '金额', scopedSlots: { customRender: 'amount' } },
   { key: 'orderStatus', width: '150px', title: '订单状态', scopedSlots: { customRender: 'orderStatus' } },
-  { key: 'chargeAccountType', width: '150px', title: '账号类型', scopedSlots: { customRender: 'chargeAccountType' } },
-  { key: 'resellerId', width: '150px', title: '核销商ID', scopedSlots: { customRender: 'resellerId' } },
-  { key: 'matchOutTradeNo', width: '200px', title: '平台支付订单号', scopedSlots: { customRender: 'matchOutTradeNo' } },
-  { key: 'productType', width: '150px', title: '产品类型 ', scopedSlots: { customRender: 'productType' } },
-  { key: 'chargeAccount', width: '150px', title: '充值账号', scopedSlots: { customRender: 'chargeAccount' } },
-  { key: 'queryFlag', width: '150px', title: '查询标志', scopedSlots: { customRender: 'queryFlag' } },
-  { key: 'gmtCreate', width: '150px', title: '创建日期', scopedSlots: { customRender: 'gmtCreate' } },
-  { key: 'gmtUpdate', width: '150px', title: '更新日期', scopedSlots: { customRender: 'gmtUpdate' } },
+  { key: 'channelOrderNo', width: '180px', title: '官方单号', scopedSlots: { customRender: 'channelOrderNo' } },
+  { key: 'productType', width: '200px', title: '业务类型', scopedSlots: { customRender: 'productType' } },
+  { key: 'chargeAccount', width: '150px', title: '充值账号 ', scopedSlots: { customRender: 'chargeAccount' } },
+  { key: 'gmtCreate', width: '180px', title: '创建时间', scopedSlots: { customRender: 'gmtCreate' } },
+  { key: 'gmtPayingEnd', width: '180px', title: '支付完成时间', scopedSlots: { customRender: 'gmtPayingEnd' } },
+  { key: 'x', width: '180px', title: '到账时间', scopedSlots: { customRender: 'x' } },
+  // { key: 'gmtUpdate', width: '180px', title: '更新日期', scopedSlots: { customRender: 'gmtUpdate' } },
   { key: 'op', title: '操作', width: '260px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }
 ]
 

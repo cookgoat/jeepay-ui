@@ -4,21 +4,14 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline" class="table-head-ground">
           <div class="table-layer">
-            <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
-              <a-range-picker
-                @change="onChange"
-                :show-time="{ format: 'HH:mm:ss' }"
-                format="YYYY-MM-DD HH:mm:ss"
-                :disabled-date="disabledDate"
-              >
-                <a-icon slot="suffixIcon" type="sync" />
-              </a-range-picker>
-            </a-form-item>
-            <jeepay-text-up :placeholder="'支付订单号'" :msg="searchData.payOrderId" v-model="searchData.payOrderId" />
             <jeepay-text-up :placeholder="'商户订单号'" :msg="searchData.mchOrderNo" v-model="searchData.mchOrderNo" />
-            <jeepay-text-up :placeholder="'商户号'" :msg="searchData.mchNo" v-model="searchData.mchNo" />
-            <jeepay-text-up :placeholder="'服务商号'" :msg="searchData.isvNo" v-model="searchData.isvNo" />
-            <jeepay-text-up :placeholder="'应用AppId'" :msg="searchData.appId" v-model="searchData.appId"/>
+            <jeepay-text-up :placeholder="'支付订单号'" :msg="searchData.payOrderId" v-model="searchData.payOrderId" />
+            <jeepay-text-up :placeholder="'官方单号'" :msg="searchData.channelOrderNo" v-model="searchData.mchNo" />
+            <jeepay-text-up :placeholder="'核销商ID'" :msg="searchData.resellerNo" v-model="searchData.mchNo" />
+            <jeepay-text-up :placeholder="'核销商名称'" :msg="searchData.resellerName" v-model="searchData.mchNo" />
+            <!-- <jeepay-text-up :placeholder="'商户号'" :msg="searchData.mchNo" v-model="searchData.mchNo" /> -->
+            <!-- <jeepay-text-up :placeholder="'服务商号'" :msg="searchData.isvNo" v-model="searchData.isvNo" /> -->
+            <!-- <jeepay-text-up :placeholder="'应用AppId'" :msg="searchData.appId" v-model="searchData.appId"/> -->
             <a-form-item label="" class="table-head-layout">
               <a-select v-model="searchData.state" placeholder="支付状态" default-value="">
                 <a-select-option value="">全部</a-select-option>
@@ -47,6 +40,14 @@
               </a-select>
             </a-form-item>
             <a-form-item label="" class="table-head-layout">
+              <a-select v-model="searchData.amountSearch" placeholder="支付金额" default-value="">
+                <a-select-option value="10000">100</a-select-option>
+                <a-select-option value="20000">200</a-select-option>
+                <a-select-option value="50000">500</a-select-option>
+                <a-select-option value="100000">1000</a-select-option>
+              </a-select>
+            </a-form-item>
+            <!-- <a-form-item label="" class="table-head-layout">
               <a-select v-model="searchData.divisionState" placeholder="分账状态" default-value="">
                 <a-select-option value="">全部</a-select-option>
                 <a-select-option value="0">未发生分账</a-select-option>
@@ -54,9 +55,19 @@
                 <a-select-option value="2">分账处理中</a-select-option>
                 <a-select-option value="3">分账任务已结束（状态请看分账记录）</a-select-option>
               </a-select>
-            </a-form-item>
-            <a-form-item label="订单金额">
+            </a-form-item> -->
+            <!-- <a-form-item label="订单金额">
               <a-input-number v-model="searchData.amountSearch" placeholder="请输入" :min="1" :max="9999999999999" />
+            </a-form-item> -->
+            <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
+              <a-range-picker
+                @change="onChange"
+                :show-time="{ format: 'HH:mm:ss' }"
+                format="YYYY-MM-DD HH:mm:ss"
+                :disabled-date="disabledDate"
+              >
+                <a-icon slot="suffixIcon" type="sync" />
+              </a-range-picker>
             </a-form-item>
             <span class="table-page-search-submitButtons">
               <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">搜索</a-button>
@@ -77,7 +88,7 @@
         rowKey="payOrderId"
         :scrollX="1550"
       >
-        <template slot="amountSlot" slot-scope="{record}"><b>￥{{ record.amount/100 }}</b></template> <!-- 自定义插槽 -->
+        <template slot="mchName" slot-scope="{record}"><b>{{ record.mchName }}</b></template> <!-- 自定义插槽 -->
         <template slot="stateSlot" slot-scope="{record}">
           <a-tag
             :key="record.state"
@@ -106,6 +117,7 @@
         </template>
         <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
           <JeepayTableColumns>
+            <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')">查单</a-button>
             <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="detailFunc(record.payOrderId)">详情</a-button>
 
             <a-button type="link" v-if="$access('ENT_PAY_ORDER_REFUND')" style="color: red" v-show="(record.state === 2 && record.refundState !== 2)" @click="openFunc(record, record.payOrderId)">退款</a-button>
@@ -397,19 +409,20 @@ import moment from 'moment'
 
 // eslint-disable-next-line no-unused-vars
 const tableColumns = [
-  { key: 'amount', title: '支付金额', ellipsis: true, width: '130px', fixed: 'left', scopedSlots: { customRender: 'amountSlot' } },
-  { key: 'mchFeeAmount', dataIndex: 'mchFeeAmount', title: '手续费', customRender: (text) => '￥' + (text / 100).toFixed(2) },
-  { key: 'mchName', title: '商户名称', dataIndex: 'mchName', ellipsis: true, width: '100px' },
-  { key: 'payOrderId', title: '支付订单号', dataIndex: 'payOrderId' },
-  { key: 'channelOrderNo', title: '渠道订单号', dataIndex: 'channelOrderNo', width: '100px' },
-  { key: 'resellerOrderNo', title: '核销订单号', dataIndex: 'resellerOrderNo', width: '100px' },
-  { key: 'mchOrderNo', title: '商户订单号', dataIndex: 'mchOrderNo' },
-  { key: 'wayName', title: '支付方式', dataIndex: 'wayName', width: 150 },
+  { key: 'mchName', title: '商户名称', ellipsis: true, width: '130px', fixed: 'left', scopedSlots: { customRender: 'mchName' } },
+  { key: 'resellerName', title: '核销商名称', dataIndex: 'resellerName', ellipsis: true, width: '120px' },
+  { key: 'resellerNo', title: '核销商ID', dataIndex: 'resellerNo', ellipsis: true, width: '100px' },
+  { key: 'payOrderId', title: '支付订单号', dataIndex: 'payOrderId', width: '220px' },
+  { key: 'mchOrderNo', title: '商户订单号', dataIndex: 'mchOrderNo', width: '225px' },
+  { key: 'resellerOrderNo', title: '核销订单号', dataIndex: 'resellerOrderNo', width: '225px' },
+  { key: 'channelOrderNo', title: '官方单号', dataIndex: 'channelOrderNo', width: '180px' },
+  { key: 'amount', title: '支付金额', dataIndex: 'amount', width: 100 },
+  { key: 'wayName', title: '支付方式', dataIndex: 'wayName', width: 125 },
   { key: 'state', title: '支付状态', scopedSlots: { customRender: 'stateSlot' }, width: 100 },
-  { key: 'refundState', title: '退款状态', scopedSlots: { customRender: 'refundStateSlot' }, width: 100 },
-  { key: 'divisionState', title: '分账状态', scopedSlots: { customRender: 'divisionStateSlot' } },
   { key: 'notifyState', title: '回调状态', scopedSlots: { customRender: 'notifySlot' }, width: 100 },
-  { key: 'createdAt', dataIndex: 'createdAt', title: '创建日期', width: 180 },
+  { key: 'clientIp', title: '下单IP', dataIndex: 'clientIp', width: '125px' },
+  { key: 'createdAt', title: '创建时间', dataIndex: 'createdAt', width: 180 },
+  { key: 'x', dataIndex: 'x', title: '支付成功时间', width: 180 },
   { key: 'op', title: '操作', width: '160px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }
 ]
 
