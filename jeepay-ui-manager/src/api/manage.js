@@ -120,6 +120,9 @@ export const API_URL_RESELLER_FUNDACCOUNT_LIST = '/api/resellerFundAccount'
 /** 核销流水 */
 export const API_URL_RESELLER_FUNDLINE_LIST = '/api/resellerFundLine'
 
+/** 核销订单统计管理 **/
+export const API_URL_RESELLER_ORDER_COUNT_LIST = '/api/resellerOrders/resellerCounterPage'
+
 /** 上传图片/文件地址 **/
 export const upload = {
   avatar: request.baseUrl + '/api/ossFiles/avatar',

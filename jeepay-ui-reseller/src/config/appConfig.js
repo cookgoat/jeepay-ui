@@ -25,5 +25,6 @@ export const asyncRouteDefine = {
   'RolePage': { defaultPath: '/roles', component: () => import('@/views/role/RolePage') },
 
   'ResellerFundLineGroupPage': { defaultPath: '/resellerFundLineGroup', component: () => import ('@/views/reseller/fundLine/resellerFundLineGroupList') }, // 核销流水
-  'ResellerOrderGroupPage': { defaultPath: '/resellerOrderGroup', component: () => import ('@/views/reseller/order/resellerOrderGroupList') } // 核销订单
+  'ResellerOrderGroupPage': { defaultPath: '/resellerOrderGroup', component: () => import ('@/views/reseller/order/resellerOrderGroupList') }, // 核销订单
+  'ResellerOrderCountGroupPage': { defaultPath: '/resellerOrderCountGroup', component: () => import ('@/views/reseller/count/resellerOrderCountList') }
 }
