@@ -18,6 +18,16 @@
               <a-button style="margin-left: 8px" icon="reload" @click="() => this.searchData = {}">重置</a-button>
             </span>
           </div>
+           <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
+                        <a-range-picker
+                          @change="onChange"
+                          :show-time="{ format: 'HH:mm:ss' }"
+                          format="YYYY-MM-DD HH:mm:ss"
+                          :disabled-date="disabledDate"
+                        >
+                          <a-icon slot="suffixIcon" type="sync" />
+                        </a-range-picker>
+                      </a-form-item>
         </a-form>
         <div>
           <a-button icon="plus" v-if="$access('ENT_RESELLER_ORDER_EXPORT_COUNT')" type="primary" @click="importOrder" class="mg-b-30">导出报表</a-button>
