@@ -12,25 +12,24 @@
             </a-form-item>
             <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount" v-model="searchData.chargeAccount" />
             <jeepay-text-up :placeholder="'子核销名称'" :msg="searchData.queryFlag" v-model="searchData.queryFlag" />
-
+            <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
+              <a-range-picker
+                  @change="onChange"
+                  :show-time="{ format: 'HH:mm:ss' }"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  :disabled-date="disabledDate"
+              >
+                <a-icon slot="suffixIcon" type="sync" />
+              </a-range-picker>
+            </a-form-item>
             <span class="table-page-search-submitButtons" style="margin-left: 20px;">
               <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">搜索</a-button>
               <a-button style="margin-left: 8px" icon="reload" @click="() => this.searchData = {}">重置</a-button>
+              <a :href="exporturl" target="_blank" style="margin-left: 20px;font-size: 20px;"><span @click="exportOrder()">导出</span></a>
             </span>
           </div>
-           <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
-                        <a-range-picker
-                          @change="onChange"
-                          :show-time="{ format: 'HH:mm:ss' }"
-                          format="YYYY-MM-DD HH:mm:ss"
-                          :disabled-date="disabledDate"
-                        >
-                          <a-icon slot="suffixIcon" type="sync" />
-                        </a-range-picker>
-                      </a-form-item>
         </a-form>
         <div>
-          <a-button icon="plus" v-if="$access('ENT_RESELLER_ORDER_EXPORT_COUNT')" type="primary" @click="importOrder" class="mg-b-30">导出报表</a-button>
         </div>
       </div>
 
@@ -57,7 +56,7 @@
       </JeepayTable>
     </a-card>
     <Detail ref="detailInfo"></Detail>
-    <Upload ref="uploadInfo"></Upload>
+    <!--    <Upload ref="uploadInfo"></Upload>-->
   </page-header-wrapper>
 </template>
 
@@ -65,11 +64,13 @@
     import JeepayTable from '@/components/JeepayTable/JeepayTable'
     import JeepayTextUp from '@/components/JeepayTextUp/JeepayTextUp' // 文字上移组件
     import JeepayTableColumns from '@/components/JeepayTable/JeepayTableColumns'
-    // eslint-disable-next-line camelcase
     import { API_URL_RESELLER_ORDER_COUNT_LIST, req } from '@/api/manage'
     import moment from 'moment'
     import Detail from '@/views/reseller/order/Detail'
     import Upload from '@/views/reseller/order/Upload'
+    import appConfig from '@/config/appConfig'
+    import storage from '@/utils/jeepayStorageWrapper'
+    import qs from 'qs'
     const tableColumns = [
 
         { key: 'resellerName', width: '200px', title: '核销商名称', scopedSlots: { customRender: 'resellerName' } },
@@ -83,6 +84,12 @@
         { key: 'op', title: '操作', width: '160px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }
     ]
 
+    function getHeaders () {
+      const headers = {}
+      headers[appConfig.ACCESS_TOKEN_NAME] = storage.getToken()
+      return headers
+    }
+
     export default {
         name: 'OrderList',
         // eslint-disable-next-line standard/object-curly-even-spacing
@@ -91,14 +98,22 @@
             return {
                 btnLoading: false,
                 tableColumns: tableColumns,
-                searchData: {}
+                searchData: {},
+                headers: getHeaders(),
+                exporturl: ''
             }
         },
         mounted () {
         },
         methods: {
-            importOrder () {
-              this.$refs.uploadInfo.show()
+            exportOrder () {
+              var params = qs.stringify({
+                'iToken': storage.getToken(),
+                ...this.searchData
+              })
+              this.exporturl = `/api/resellerOrders/exportResellerCounter?${params}`
+              return this.exporturl
+              // window.location.href = this.exporturl
             },
             disabledDate (current) { // 今日之后日期不可选
                 return current && current > moment().endOf('day')

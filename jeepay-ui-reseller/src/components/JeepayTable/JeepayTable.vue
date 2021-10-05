@@ -9,7 +9,7 @@
   <div>
     <a-table
       :columns="tableColumns"
-      :data-source="apiResData.records"
+      :data-source = "showPage ? apiResData.records : apiResData"
       :pagination="pagination"
       :loading="showLoading"
       @change="handleTableChange"
@@ -33,6 +33,7 @@ export default {
 
   // 传递数据参数 ( 父-->子 参数 )
   props: {
+    showPage: { type: Boolean, default: true },
     initData: { type: Boolean, default: true }, // 初始化列表数据， 默认true
     tableColumns: Array, // 表格数组列
     reqTableDataFunc: { type: Function }, // 请求列表数据

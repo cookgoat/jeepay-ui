@@ -3,95 +3,93 @@
     <div class="chart-top">
       <div class="chart-item" style="background: white;">
         <a-skeleton active :loading="true" v-if="skeletonIsShow" style="padding:20px" :paragraph="{ rows: 6 }" />
-        <a-descriptions title="今日财务统计">
-          <a-descriptions-item label="今日订单金额">
-            {{'￥'+todayStat.allAmount / 100}}
-          </a-descriptions-item>
-          <a-descriptions-item label="今日回款金额">
-            {{'￥'+todayStat.recoveriesAllAmount / 100}}
-          </a-descriptions-item>
-          <a-descriptions-item label="今日完成金额">
-            {{'￥'+todayStat.finishedAllAmount / 100}}
-          </a-descriptions-item>
-          <a-descriptions-item label="今日待支付金额">
-            {{'￥'+todayStat.waitAllAmount / 100}}
-          </a-descriptions-item>
-          <a-descriptions-item label="今日分润金额">
-            {{'￥'+todayStat.shareAllAmount / 100}}
-          </a-descriptions-item>
-        </a-descriptions>
-        <hr/>
-        <a-descriptions title="总财务统计">
+        <a-descriptions title="今日资金统计">
+<!--          <a-descriptions-item label="核销商名称">-->
+<!--            {{currentStat.resellerName}}-->
+<!--          </a-descriptions-item>-->
           <a-descriptions-item label="总订单金额">
-            {{'￥'+allStat.allAmount / 100}}
+            {{'￥'+currentStat.allOrderAmount / 100}}
           </a-descriptions-item>
-          <a-descriptions-item label="总回款金额">
-            {{'￥'+allStat.recoveriesAllAmount / 100}}
+          <a-descriptions-item label="完成金额">
+            {{'￥'+currentStat.allFinishAmount / 100}}
           </a-descriptions-item>
-          <a-descriptions-item label="总完成金额">
-            {{'￥'+allStat.finishedAllAmount / 100}}
+          <a-descriptions-item label="回款金额">
+            {{'￥'+currentStat.allReturnedAmount / 100}}
           </a-descriptions-item>
-          <a-descriptions-item label="总待支付金额">
-            {{'￥'+allStat.waitAllAmount / 100}}
+          <a-descriptions-item label="支付中金额">
+            {{'￥'+currentStat.allPayAmount / 100}}
           </a-descriptions-item>
-          <a-descriptions-item label="总分润金额">
-            {{'￥'+allStat.shareAllAmount / 100}}
+          <a-descriptions-item label="休眠订单金额">
+            {{'￥'+currentStat.allSleepAmount / 100}}
+          </a-descriptions-item>
+          <a-descriptions-item label="等待支付订单金额">
+            {{'￥'+currentStat.allWaitAmount / 100}}
           </a-descriptions-item>
         </a-descriptions>
       </div>
-      <!--      <div class="chart-item top-left">-->
-      <!--        <div class="chart-data" style="position:relative">-->
-      <!--          &lt;!&ndash; 骨架屏与图表有冲突，故不使用内嵌方式。 因为内边距的原因，采取v-if的方式 &ndash;&gt;-->
-      <!--          <a-skeleton active :loading="true" v-if="skeletonIsShow" style="padding:20px" :paragraph="{ rows: 6 }" />-->
-      <!--          <div v-show="!skeletonIsShow">-->
-      <!--            <div class="analy-title" style="padding:20px;box-sizing:border-box;padding-bottom:10px">-->
-      <!--              <span>今日订单金额：{{todayStat.allAmount}}</span>-->
-      <!--              <span>总订单金额：{{allStat.allAmount}}</span>-->
-      <!--            </div>-->
-      <!--            <div class="analy-title" style="padding:20px;box-sizing:border-box;padding-bottom:10px">-->
-      <!--              <span>今日回款金额：{{todayStat.recoveriesAllAmount}}</span>-->
-      <!--              <span>总回款金额：{{allStat.recoveriesAllAmount}}</span>-->
-      <!--            </div>-->
-      <!--            <div class="analy-title" style="padding:20px;box-sizing:border-box;padding-bottom:10px">-->
-      <!--              <span>今日完成金额：{{todayStat.finishedAllAmount}}</span>-->
-      <!--              <span>总完成金额：{{allStat.finishedAllAmount}}</span>-->
-      <!--            </div>-->
-      <!--            <div class="analy-title" style="padding:20px;box-sizing:border-box;padding-bottom:10px">-->
-      <!--              <span>今日待支付金额：{{todayStat.waitAllAmount}}</span>-->
-      <!--              <span>总待支付金额：{{allStat.waitAllAmount}}</span>-->
-      <!--            </div>-->
-      <!--            <div class="analy-title" style="padding:20px;box-sizing:border-box;padding-bottom:10px">-->
-      <!--              <span>今日分润金额：{{todayStat.shareAllAmount}}</span>-->
-      <!--              <span>总分润金额：{{allStat.shareAllAmount}}</span>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
-
     </div>
+    <hr/>
+    <JeepayTable
+        @btnLoadClose="btnLoading=false"
+        ref="infoTable"
+        :initData="true"
+        :showPage="false"
+        :reqTableDataFunc="reqTableDataFunc"
+        :tableColumns="tableColumns"
+        :searchData="searchData"
+        :scrollX="1100"
+        rowKey="id"
+    >
+      <template slot="faceAmount" slot-scope="{record}"><b>{{ '￥'+record.faceAmount  / 100}}</b></template> <!-- 自定义插槽 -->
+      <template slot="allCount" slot-scope="{record}"><b>{{ record.allCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allAmount" slot-scope="{record}"><b>{{ '￥'+record.allAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="waitCount" slot-scope="{record}"><b>{{ record.waitCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="waitAllAmount" slot-scope="{record}"><b>{{ '￥'+record.waitAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="payingCount" slot-scope="{record}"><b>{{ record.payingCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="payAllAmount" slot-scope="{record}"> <b>{{ '￥'+record.payAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="finishCount" slot-scope="{record}"><b>{{ record.finishCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="finishAllAmount" slot-scope="{record}"><b>{{ '￥'+record.finishAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="sleepCount" slot-scope="{record}"><b>{{ record.sleepCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="sleepAllAmount" slot-scope="{record}"><b>{{ '￥'+record.sleepAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+    </JeepayTable>
   </div>
 </template>
 
 <script>
-  import { statByToday, statByAll } from '@/api/manage'
+import { statByCurrentUser, overallResellerCount } from '@/api/manage'
+  import JeepayTable from '@/components/JeepayTable/JeepayTable'
+  import JeepayTextUp from '@/components/JeepayTextUp/JeepayTextUp' // 文字上移组件
+  import JeepayTableColumns from '@/components/JeepayTable/JeepayTableColumns'
+
+  const tableColumns = [
+    { key: 'faceAmount', width: '200px', title: '订单面值', scopedSlots: { customRender: 'faceAmount' } },
+    { key: 'allCount', width: '200px', title: '订单总数', scopedSlots: { customRender: 'allCount' } },
+    { key: 'allAmount', width: '200px', title: '订单总金额', scopedSlots: { customRender: 'allAmount' } },
+    { key: 'waitCount', width: '200px', title: '订单待处理总数', scopedSlots: { customRender: 'waitCount' } },
+    { key: 'waitAllAmount', width: '200px', title: '订单待处理总金额', scopedSlots: { customRender: 'waitAllAmount' } },
+    { key: 'payingCount', width: '200px', title: '订单支付中总数', scopedSlots: { customRender: 'payingCount' } },
+    { key: 'payAllAmount', width: '150px', title: '订单支付中总金额', scopedSlots: { customRender: 'payAllAmount' } },
+    { key: 'finishCount', width: '150px', title: '订单完成数', scopedSlots: { customRender: 'finishCount' } },
+    { key: 'finishAllAmount', width: '150px', title: '订单完成总金额', scopedSlots: { customRender: 'finishAllAmount' } },
+    { key: 'sleepCount', width: '150px', title: '休眠订单总数', scopedSlots: { customRender: 'sleepCount' } },
+    { key: 'sleepAllAmount', width: '150px', title: '休眠订单总金额', scopedSlots: { customRender: 'sleepAllAmount' } }
+  ]
   export default {
+    components: { JeepayTable, JeepayTableColumns, JeepayTextUp },
     data () {
       return {
         skeletonIsShow: true, // 骨架屏是否显示
         skeletonReqNum: 0, // 当所有数据请求完毕后关闭骨架屏（共四个请求）
-        todayStat: {
-          allAmount: 0,
-          recoveriesAllAmount: 0,
-          finishedAllAmount: 0,
-          waitAllAmount: 0,
-          shareAllAmount: 0
-        },
-        allStat: {
-          allAmount: 0,
-          recoveriesAllAmount: 0,
-          finishedAllAmount: 0,
-          waitAllAmount: 0,
-          shareAllAmount: 0
+        tableColumns: tableColumns,
+        currentStat: {
+          allReturnedAmount: 0,
+          allPayAmount: 0,
+          allOrderAmount: 0,
+          resellerName: '',
+          allFinishAmount: 0,
+          allSleepAmount: 0,
+          allWaitAmount: 0,
+          resellerNo: ''
         }
       }
     },
@@ -99,44 +97,34 @@
       this.init()
     },
     methods: {
+      queryFunc () {
+        this.btnLoading = true
+        this.$refs.infoTable.refTable(true)
+      },
+      // 请求table接口数据
+      reqTableDataFunc: (params) => {
+        return overallResellerCount(params)
+      },
+      searchFunc: function () { // 点击【查询】按钮点击事件
+        this.$refs.infoTable.refTable(true)
+      },
       init () {
         const that = this
-        // 今日统计
-        if (this.$access('ENT_RESELLER_MAIN_FUN_TODAY')) {
-          // 周总交易金额
-          statByToday().then(res => {
-            this.todayStat.allAmount = res.allAmount
-            this.todayStat.recoveriesAllAmount = res.recoveriesAllAmount
-            this.todayStat.finishedAllAmount = res.finishedAllAmount
-            this.todayStat.waitAllAmount = res.waitAllAmount
-            this.todayStat.shareAllAmount = res.shareAllAmount
-            that.skeletonClose(that)
-          }).catch(err => {
-            console.log(err)
-            that.skeletonClose(that)
-          })
-        } else {
-          this.ispayAmount = false
+        // 周总交易金额
+        statByCurrentUser().then(res => {
+          this.currentStat.allReturnedAmount = res.allReturnedAmount
+          this.currentStat.allPayAmount = res.allPayAmount
+          this.currentStat.allOrderAmount = res.allOrderAmount
+          this.currentStat.resellerName = res.resellerName
+          this.currentStat.allFinishAmount = res.allFinishAmount
+          this.currentStat.allSleepAmount = res.allSleepAmount
+          this.currentStat.allWaitAmount = res.allWaitAmount
+          this.currentStat.resellerNo = res.resellerNo
           that.skeletonClose(that)
-        }
-        // 总计
-        if (this.$access('ENT_RESELLER_MAIN_FUN_ACCOUNT')) {
-          // 周总交易金额
-          statByAll().then(res => {
-            this.allStat.allAmount = res.allAmount
-            this.allStat.recoveriesAllAmount = res.recoveriesAllAmount
-            this.allStat.finishedAllAmount = res.finishedAllAmount
-            this.allStat.waitAllAmount = res.waitAllAmount
-            this.allStat.shareAllAmount = res.shareAllAmount
-            that.skeletonClose(that)
-          }).catch(err => {
-            console.log(err)
-            that.skeletonClose(that)
-          })
-        } else {
-          this.ispayAmount = false
+        }).catch(err => {
+          console.log(err)
           that.skeletonClose(that)
-        }
+        })
       },
       // getUserInfo () {
       //   const that = this
@@ -147,7 +135,7 @@
       skeletonClose (that) {
         // 每次请求成功，skeletonReqNum + 1,当大于等于4时， 取消骨架屏展示
         that.skeletonReqNum++
-        that.skeletonReqNum >= 2 ? that.skeletonIsShow = false : that.skeletonIsShow = true
+        that.skeletonReqNum >= 1 ? that.skeletonIsShow = false : that.skeletonIsShow = true
       }
     }
   }

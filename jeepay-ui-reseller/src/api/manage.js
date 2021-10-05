@@ -153,6 +153,20 @@ export function getAvailablePayInterfaceList (appId, wayCode) {
   })
 }
 
+export function overallResellerCount () {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/overallResellerCount',
+    method: 'GET'
+  })
+}
+
+export function statByCurrentUser () {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/orderFundOverallView',
+    method: 'GET'
+  })
+}
+
 export function statByToday () {
   return request.request({
     url: API_URL_MAIN_STATISTIC + '/statByToday',
@@ -193,6 +207,13 @@ export function updateUserInfo (parameter) {
 export function getUserInfo () {
   return request.request({
     url: '/api/current/user',
+    method: 'get'
+  })
+}
+
+export function downLoadExcel () {
+  return request.request({
+    url: '/api/resellerOrders/exportResellerCounter',
     method: 'get'
   })
 }
