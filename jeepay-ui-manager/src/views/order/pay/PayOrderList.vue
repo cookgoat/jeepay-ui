@@ -117,7 +117,8 @@
         </template>
         <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
           <JeepayTableColumns>
-            <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')">查单</a-button>
+            <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="searchOrder(record.channelOrderNo)">查单</a-button>
+            <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="concatOrder(record.payOrderId, record.state)">补单</a-button>
             <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="detailFunc(record.payOrderId)">详情</a-button>
 
             <a-button type="link" v-if="$access('ENT_PAY_ORDER_REFUND')" style="color: red" v-show="(record.state === 2 && record.refundState !== 2)" @click="openFunc(record, record.payOrderId)">退款</a-button>
@@ -127,6 +128,7 @@
     </a-card>
     <!-- 退款弹出框 -->
     <refund-modal ref="refundModalInfo" :callbackFunc="searchFunc"></refund-modal>
+    <Detail ref="orderDetail"></Detail>
     <!-- 日志详情抽屉 -->
     <template>
       <a-drawer
@@ -404,8 +406,16 @@ import RefundModal from './RefundModal' // 退款弹出框
 import JeepayTextUp from '@/components/JeepayTextUp/JeepayTextUp' // 文字上移组件
 import JeepayTable from '@/components/JeepayTable/JeepayTable'
 import JeepayTableColumns from '@/components/JeepayTable/JeepayTableColumns'
-import { API_URL_PAY_ORDER_LIST, API_URL_PAYWAYS_LIST, req } from '@/api/manage'
+import {
+  API_URL_PAY_ORDER_LIST,
+  API_URL_PAYWAYS_LIST,
+  req,
+  conectOrder,
+  getConfigs
+} from '@/api/manage'
 import moment from 'moment'
+import axios from 'axios'
+import Detail from './searchOrderDetail'
 
 // eslint-disable-next-line no-unused-vars
 const tableColumns = [
@@ -428,7 +438,7 @@ const tableColumns = [
 
 export default {
   name: 'IsvListPage',
-  components: { JeepayTable, JeepayTableColumns, JeepayTextUp, RefundModal },
+  components: { JeepayTable, JeepayTableColumns, JeepayTextUp, RefundModal, Detail },
   data () {
     return {
       btnLoading: false,
@@ -438,7 +448,10 @@ export default {
       createdEnd: '', // 选择结束时间
       visible: false,
       detailData: {},
-      payWayList: []
+      payWayList: [],
+      groupKey: 'applicationConfig',
+      orderDetail: {},
+      configData: {}
     }
   },
   computed: {
@@ -482,6 +495,37 @@ export default {
         that.detailData = res
       })
       this.visible = true
+    },
+    searchOrder (channelOrderNo) {
+      const that = this
+      getConfigs(that.groupKey).then(res => {
+        let configUrl = ''
+        res.forEach(item => {
+          if (item.configKey === 'paySiteUrl') {
+            configUrl = item.configVal
+          }
+        })
+        if (configUrl !== '') {
+          axios.get(configUrl + '/api/pay/query/' + channelOrderNo)
+          .then(function (response) {
+            that.$refs.orderDetail.show(response.data)
+          })
+          .catch(function (error) {
+            console.log(error)
+            that.$refs.orderDetail.onClose()
+          })
+        }
+      })
+    },
+    concatOrder (payOrderId, state) {
+      if (state === 2) {
+        return this.$infoBox.modalWarning('订单无法补单', '')
+      }
+      conectOrder(payOrderId).then(res => {
+          this.$infoBox.modalSuccess('补单成功', '')
+      }).catch(res => {
+          this.$infoBox.modalError(res.msg, '')
+      })
     },
     moment,
     onChange (date, dateString) {

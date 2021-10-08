@@ -141,6 +141,14 @@ const api = {
 
 export default api
 
+/** 补单 */
+export function conectOrder (payOrderId) {
+  return request.request({
+    url: '/api/payOrder/supplement/' + payOrderId,
+    method: 'post'
+  })
+}
+
 /** 获取权限树状结构图 **/
 export function getEntTree (sysType) {
   return request.request({ url: '/api/sysEnts/showTree?sysType=' + sysType, method: 'GET' })

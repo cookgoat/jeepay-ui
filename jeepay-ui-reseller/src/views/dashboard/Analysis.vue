@@ -3,40 +3,36 @@
     <div class="chart-top">
       <div class="chart-item" style="background: white;">
         <a-skeleton active :loading="true" v-if="skeletonIsShow" style="padding:20px" :paragraph="{ rows: 6 }" />
-        <a-descriptions title="今日资金统计">
-<!--          <a-descriptions-item label="核销商名称">-->
-<!--            {{currentStat.resellerName}}-->
-<!--          </a-descriptions-item>-->
+        <a-descriptions title="京东E卡">
           <a-descriptions-item label="总订单金额">
-            {{'￥'+currentStat.allOrderAmount / 100}}
+            {{'￥'+jd_currentStat.allOrderAmount / 100}}
           </a-descriptions-item>
           <a-descriptions-item label="完成金额">
-            {{'￥'+currentStat.allFinishAmount / 100}}
+            {{'￥'+jd_currentStat.allFinishAmount / 100}}
           </a-descriptions-item>
           <a-descriptions-item label="回款金额">
-            {{'￥'+currentStat.allReturnedAmount / 100}}
+            {{'￥'+jd_currentStat.allReturnedAmount / 100}}
           </a-descriptions-item>
           <a-descriptions-item label="支付中金额">
-            {{'￥'+currentStat.allPayAmount / 100}}
+            {{'￥'+jd_currentStat.allPayAmount / 100}}
           </a-descriptions-item>
           <a-descriptions-item label="休眠订单金额">
-            {{'￥'+currentStat.allSleepAmount / 100}}
+            {{'￥'+jd_currentStat.allSleepAmount / 100}}
           </a-descriptions-item>
           <a-descriptions-item label="等待支付订单金额">
-            {{'￥'+currentStat.allWaitAmount / 100}}
+            {{'￥'+jd_currentStat.allWaitAmount / 100}}
           </a-descriptions-item>
         </a-descriptions>
       </div>
     </div>
-    <hr/>
+
     <JeepayTable
         @btnLoadClose="btnLoading=false"
         ref="infoTable"
         :initData="true"
         :showPage="false"
-        :reqTableDataFunc="reqTableDataFunc"
+        :reqTableDataFunc="jd_reqTableDataFunc"
         :tableColumns="tableColumns"
-        :searchData="searchData"
         :scrollX="1100"
         rowKey="id"
     >
@@ -52,11 +48,99 @@
       <template slot="sleepCount" slot-scope="{record}"><b>{{ record.sleepCount }}</b></template> <!-- 自定义插槽 -->
       <template slot="sleepAllAmount" slot-scope="{record}"><b>{{ '￥'+record.sleepAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
     </JeepayTable>
+    <hr/>
+    <div class="chart-top">
+      <div class="chart-item" style="background: white;">
+        <a-skeleton active :loading="true" v-if="skeletonIsShow" style="padding:20px" :paragraph="{ rows: 6 }" />
+        <a-descriptions title="携程任我行">
+          <a-descriptions-item label="总订单金额">
+            {{'￥'+xc_currentStat.allOrderAmount / 100}}
+          </a-descriptions-item>
+          <a-descriptions-item label="完成金额">
+            {{'￥'+xc_currentStat.allFinishAmount / 100}}
+          </a-descriptions-item>
+          <a-descriptions-item label="回款金额">
+            {{'￥'+xc_currentStat.allReturnedAmount / 100}}
+          </a-descriptions-item>
+          <a-descriptions-item label="支付中金额">
+            {{'￥'+xc_currentStat.allPayAmount / 100}}
+          </a-descriptions-item>
+          <a-descriptions-item label="休眠订单金额">
+            {{'￥'+xc_currentStat.allSleepAmount / 100}}
+          </a-descriptions-item>
+          <a-descriptions-item label="等待支付订单金额">
+            {{'￥'+xc_currentStat.allWaitAmount / 100}}
+          </a-descriptions-item>
+        </a-descriptions>
+      </div>
+    </div>
+    <JeepayTable
+        @btnLoadClose="btnLoading=false"
+        ref="infoTable"
+        :initData="true"
+        :showPage="false"
+        :reqTableDataFunc="xc_reqTableDataFunc"
+        :tableColumns="tableColumns"
+        :scrollX="1100"
+        rowKey="id"
+    >
+      <template slot="faceAmount" slot-scope="{record}"><b>{{ '￥'+record.faceAmount  / 100}}</b></template> <!-- 自定义插槽 -->
+      <template slot="allCount" slot-scope="{record}"><b>{{ record.allCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allAmount" slot-scope="{record}"><b>{{ '￥'+record.allAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="waitCount" slot-scope="{record}"><b>{{ record.waitCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="waitAllAmount" slot-scope="{record}"><b>{{ '￥'+record.waitAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="payingCount" slot-scope="{record}"><b>{{ record.payingCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="payAllAmount" slot-scope="{record}"> <b>{{ '￥'+record.payAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="finishCount" slot-scope="{record}"><b>{{ record.finishCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="finishAllAmount" slot-scope="{record}"><b>{{ '￥'+record.finishAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="sleepCount" slot-scope="{record}"><b>{{ record.sleepCount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="sleepAllAmount" slot-scope="{record}"><b>{{ '￥'+record.sleepAllAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+    </JeepayTable>
+    <hr/>
+    <a-descriptions title="京东E卡-子核销订单资金统计"></a-descriptions>
+    <JeepayTable
+        @btnLoadClose="btnLoading=false"
+        ref="infoTable"
+        :initData="true"
+        :showPage="false"
+        :reqTableDataFunc="jd_reqTableDataFunc_child"
+        :tableColumns="tableColumns_child"
+        :scrollX="1100"
+        rowKey="id"
+    >
+      <template slot="queryFlag" slot-scope="{record}"> <b>{{ record.queryFlag }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allOrderAmount" slot-scope="{record}"><b>{{ '￥'+record.allOrderAmount  / 100}}</b></template> <!-- 自定义插槽 -->
+      <template slot="allWaitAmount" slot-scope="{record}"><b>{{ '￥'+record.allWaitAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allFinishAmount" slot-scope="{record}"><b>{{ '￥'+record.allFinishAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allReturnedAmount" slot-scope="{record}"><b>{{ '￥'+record.allReturnedAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allPayAmount" slot-scope="{record}"><b>{{ '￥'+record.allPayAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allSleepAmount" slot-scope="{record}"><b>{{ '￥'+record.allSleepAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+    </JeepayTable>
+    <hr/>
+    <a-descriptions title="携程任我行-子核销订单资金统计"></a-descriptions>
+    <JeepayTable
+        @btnLoadClose="btnLoading=false"
+        ref="infoTable"
+        :initData="true"
+        :showPage="false"
+        :reqTableDataFunc="xc_reqTableDataFunc_child"
+        :tableColumns="tableColumns_child"
+        :scrollX="1100"
+        rowKey="id"
+    >
+      <template slot="queryFlag" slot-scope="{record}"> <b>{{ record.queryFlag }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allOrderAmount" slot-scope="{record}"><b>{{ '￥'+record.allOrderAmount  / 100}}</b></template> <!-- 自定义插槽 -->
+      <template slot="allWaitAmount" slot-scope="{record}"><b>{{ '￥'+record.allWaitAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allFinishAmount" slot-scope="{record}"><b>{{ '￥'+record.allFinishAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allReturnedAmount" slot-scope="{record}"><b>{{ '￥'+record.allReturnedAmount }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allPayAmount" slot-scope="{record}"><b>{{ '￥'+record.allPayAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+      <template slot="allSleepAmount" slot-scope="{record}"><b>{{ '￥'+record.allSleepAmount / 100 }}</b></template> <!-- 自定义插槽 -->
+    </JeepayTable>
   </div>
 </template>
 
 <script>
-import { statByCurrentUser, overallResellerCount } from '@/api/manage'
+import { xcstatByCurrentUser, jdstatByCurrentUser, jdoverallResellerCount, xcoverallResellerCount, orderFundOverallViewByChildReseller } from '@/api/manage'
   import JeepayTable from '@/components/JeepayTable/JeepayTable'
   import JeepayTextUp from '@/components/JeepayTextUp/JeepayTextUp' // 文字上移组件
   import JeepayTableColumns from '@/components/JeepayTable/JeepayTableColumns'
@@ -74,6 +158,15 @@ import { statByCurrentUser, overallResellerCount } from '@/api/manage'
     { key: 'sleepCount', width: '150px', title: '休眠订单总数', scopedSlots: { customRender: 'sleepCount' } },
     { key: 'sleepAllAmount', width: '150px', title: '休眠订单总金额', scopedSlots: { customRender: 'sleepAllAmount' } }
   ]
+  const tableColumnsChild = [
+    { key: 'queryFlag', width: '200px', title: '子核销商名称', scopedSlots: { customRender: 'queryFlag' } },
+    { key: 'allOrderAmount', width: '200px', title: '总订单金额', scopedSlots: { customRender: 'allOrderAmount' } },
+    { key: 'allWaitAmount', width: '200px', title: '总待处理金额', scopedSlots: { customRender: 'allWaitAmount' } },
+    { key: 'allFinishAmount', width: '200px', title: '总完成金额', scopedSlots: { customRender: 'allFinishAmount' } },
+    { key: 'allReturnedAmount', width: '200px', title: '总回款金额', scopedSlots: { customRender: 'allReturnedAmount' } },
+    { key: 'allPayAmount', width: '200px', title: '总支付中金额', scopedSlots: { customRender: 'allPayAmount' } },
+    { key: 'allSleepAmount', width: '200px', title: '总休眠金额', scopedSlots: { customRender: 'allSleepAmount' } }
+  ]
   export default {
     components: { JeepayTable, JeepayTableColumns, JeepayTextUp },
     data () {
@@ -81,7 +174,18 @@ import { statByCurrentUser, overallResellerCount } from '@/api/manage'
         skeletonIsShow: true, // 骨架屏是否显示
         skeletonReqNum: 0, // 当所有数据请求完毕后关闭骨架屏（共四个请求）
         tableColumns: tableColumns,
-        currentStat: {
+        tableColumns_child: tableColumnsChild,
+        jd_currentStat: {
+          allReturnedAmount: 0,
+          allPayAmount: 0,
+          allOrderAmount: 0,
+          resellerName: '',
+          allFinishAmount: 0,
+          allSleepAmount: 0,
+          allWaitAmount: 0,
+          resellerNo: ''
+        },
+        xc_currentStat: {
           allReturnedAmount: 0,
           allPayAmount: 0,
           allOrderAmount: 0,
@@ -102,40 +206,75 @@ import { statByCurrentUser, overallResellerCount } from '@/api/manage'
         this.$refs.infoTable.refTable(true)
       },
       // 请求table接口数据
-      reqTableDataFunc: (params) => {
-        return overallResellerCount(params)
+      xc_reqTableDataFunc: (params) => {
+        params = {
+          productType: 'CTRIP'
+        }
+        return jdoverallResellerCount(params)
       },
-      searchFunc: function () { // 点击【查询】按钮点击事件
-        this.$refs.infoTable.refTable(true)
+      // 请求table接口数据
+      jd_reqTableDataFunc: (params) => {
+        params = {
+          productType: 'JD_E_CARD'
+        }
+        return xcoverallResellerCount(params)
+      },
+      xc_reqTableDataFunc_child: (params) => {
+        params = {
+          productType: 'CTRIP'
+        }
+        return orderFundOverallViewByChildReseller(params)
+      },
+      // 请求table接口数据
+      jd_reqTableDataFunc_child: (params) => {
+        params = {
+          productType: 'JD_E_CARD'
+        }
+        return orderFundOverallViewByChildReseller(params)
       },
       init () {
         const that = this
         // 周总交易金额
-        statByCurrentUser().then(res => {
-          this.currentStat.allReturnedAmount = res.allReturnedAmount
-          this.currentStat.allPayAmount = res.allPayAmount
-          this.currentStat.allOrderAmount = res.allOrderAmount
-          this.currentStat.resellerName = res.resellerName
-          this.currentStat.allFinishAmount = res.allFinishAmount
-          this.currentStat.allSleepAmount = res.allSleepAmount
-          this.currentStat.allWaitAmount = res.allWaitAmount
-          this.currentStat.resellerNo = res.resellerNo
+        const params = {
+          productType: 'JD_E_CARD'
+        }
+        jdstatByCurrentUser(params).then(res => {
+          this.jd_currentStat.allReturnedAmount = res.allReturnedAmount
+          this.jd_currentStat.allPayAmount = res.allPayAmount
+          this.jd_currentStat.allOrderAmount = res.allOrderAmount
+          this.jd_currentStat.resellerName = res.resellerName
+          this.jd_currentStat.allFinishAmount = res.allFinishAmount
+          this.jd_currentStat.allSleepAmount = res.allSleepAmount
+          this.jd_currentStat.allWaitAmount = res.allWaitAmount
+          this.jd_currentStat.resellerNo = res.resellerNo
+          that.skeletonClose(that)
+        }).catch(err => {
+          console.log(err)
+          that.skeletonClose(that)
+        })
+        // 周总交易金额
+        const paramsxc = {
+          productType: 'CTRIP'
+        }
+        xcstatByCurrentUser(paramsxc).then(res => {
+          this.xc_currentStat.allReturnedAmount = res.allReturnedAmount
+          this.xc_currentStat.allPayAmount = res.allPayAmount
+          this.xc_currentStat.allOrderAmount = res.allOrderAmount
+          this.xc_currentStat.resellerName = res.resellerName
+          this.xc_currentStat.allFinishAmount = res.allFinishAmount
+          this.xc_currentStat.allSleepAmount = res.allSleepAmount
+          this.xc_currentStat.allWaitAmount = res.allWaitAmount
+          this.xc_currentStat.resellerNo = res.resellerNo
           that.skeletonClose(that)
         }).catch(err => {
           console.log(err)
           that.skeletonClose(that)
         })
       },
-      // getUserInfo () {
-      //   const that = this
-      //   getMainUserInfo().then(res => {
-      //     that.userInfo = res
-      //   })
-      // },
       skeletonClose (that) {
         // 每次请求成功，skeletonReqNum + 1,当大于等于4时， 取消骨架屏展示
         that.skeletonReqNum++
-        that.skeletonReqNum >= 1 ? that.skeletonIsShow = false : that.skeletonIsShow = true
+        that.skeletonReqNum >= 2 ? that.skeletonIsShow = false : that.skeletonIsShow = true
       }
     }
   }
