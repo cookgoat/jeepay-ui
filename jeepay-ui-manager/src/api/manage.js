@@ -348,3 +348,41 @@ export function settleUpProduct (parameter) {
     data: parameter
   })
 }
+export function xcoverallResellerCount (params) {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/overallResellerCount',
+    method: 'GET',
+    params: params
+  })
+}
+
+export function jdoverallResellerCount (params) {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/overallResellerCount',
+    method: 'GET',
+    params: params
+  })
+}
+
+export function statBeyCurrentUser (params) {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/orderFundOverallView',
+    method: 'GET',
+    params: params
+  })
+}
+
+export function orderFundOverallViewByChildReseller (params) {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/orderFundOverallViewByChildReseller',
+    method: 'GET',
+    params: params
+  })
+}
+export function resellerOrdersTrigger (params) {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/trigger',
+    method: 'POST',
+    data: params
+  })
+}

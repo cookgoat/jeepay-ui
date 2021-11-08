@@ -4,230 +4,349 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline" class="table-head-ground">
           <div class="table-layer">
-            <jeepay-text-up :placeholder="'核销商ID'" :msg="searchData.resellerNo" v-model="searchData.orderNo" />
-            <jeepay-text-up :placeholder="'核销商名称'" :msg="searchData.resellerName" v-model="searchData.orderNo" />
-            <jeepay-text-up :placeholder="'官方单号'" :msg="searchData.orderNo" v-model="searchData.orderNo" />
-            <a-form-item label="" class="table-head-layout">
+            <jeepay-text-up :placeholder="'商户单号'" :msg="searchData.matchOutTradeNo" v-model="searchData.matchOutTradeNo" />
+            <jeepay-text-up :placeholder="'官方单号'" :msg="searchData.pretenderOrderNo" v-model="searchData.pretenderOrderNo" />
+            <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount" v-model="searchData.chargeAccount" />
+            <a-form-item class="table-head-layout">
               <a-select v-model="searchData.amount" placeholder="金额" default-value="">
-                <a-select-option value="10000">100</a-select-option>
-                <a-select-option value="20000">200</a-select-option>
-                <a-select-option value="50000">500</a-select-option>
-                <a-select-option value="100000">1000</a-select-option>
+                <a-select-option v-for="(item, index) in moneyList" :key="index" :value="item.value">
+                  {{ item.name }}
+                </a-select-option>
               </a-select>
             </a-form-item>
-            <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount" v-model="searchData.chargeAccount" />
             <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.orderStatus" placeholder="订单状态" default-value="">
-                <a-select-option value="WAITING_PAY">待支付</a-select-option>
-                <a-select-option value="PAYING">支付中</a-select-option>
-                <a-select-option value="FINISH">充值中</a-select-option>
-                <a-select-option value="FINISH">已到账</a-select-option>
-                <a-select-option value="FINISH">已禁用</a-select-option>
+              <a-select v-model="searchData.notifyStatus" placeholder="核销回调" default-value="">
+                <a-select-option v-for="(item, index) in writeOffCallback" :key="index" :value="item.value">
+                  {{ item.name }}
+                </a-select-option>
               </a-select>
             </a-form-item>
-            <!-- <jeepay-text-up :placeholder="'核销商ID'" :msg="searchData.resellerId" v-model="searchData.resellerId" />
-            <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount" v-model="searchData.chargeAccount" />
-            <jeepay-text-up :placeholder="'支付订单号'" :msg="searchData.matchOutTradeNo" v-model="searchData.matchOutTradeNo" />
-            <jeepay-text-up :placeholder="'查询标志'" :msg="searchData.queryFlag" v-model="searchData.queryFlag" /> -->
-            <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.productType" placeholder="业务类型" default-value="">
-                <a-select-option value="JD_E_CARD">京东E卡</a-select-option>
-                <a-select-option value="CTRIP">携程任我行</a-select-option>
+            <a-form-item class="table-head-layout">
+              <a-select v-model="isSuccess" placeholder="批量操作" @change="selectChange">
+                <a-select-option value="1">手动成功</a-select-option>
+                <a-select-option value="0">手动失败</a-select-option>
               </a-select>
             </a-form-item>
-            <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
+            <a-form-item>
+              <a-button style="background-color: #45EE58; border: 0; color: white;" @click="batchExecute">执行</a-button>
+            </a-form-item>
+          </div>
+          <div class="table-layer">
+            <jeepay-text-up :placeholder="'核销单号'" :msg="searchData.orderNo" v-model="searchData.orderNo" />
+            <a-form-item class="table-head-layout">
+              <a-select v-model="searchData.resellerName" placeholder="请选择核销商">
+                <a-select-option v-for="item in reSellerList" :key="item.resellerNo" :value="item.resellerName">
+                  {{ item.resellerName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+<!--            核销状态-->
+            <a-form-item class="table-head-layout">
+              <a-select v-model="searchData.orderStatus" placeholder="请选择核销状态">
+                <a-select-option v-for="(item, index) in orderStatus" :key="index" :value="item.value">
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+<!--            产品类型-->
+            <a-form-item class="table-head-layout">
+              <a-select v-model="searchData.productType" placeholder="产品类型">
+                <a-select-option v-for="(item, index) in productTypeList" :key="index" :value="item.value">
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+            <a-form-item label="" class="table-head-layout" style="max-width:250px;min-width:200px">
               <a-range-picker
                 @change="onChange"
-                :show-time="{ format: 'HH:mm:ss' }"
-                format="YYYY-MM-DD HH:mm:ss"
-                :disabled-date="disabledDate"
+                v-model="daterange"
               >
-                <a-icon slot="suffixIcon" type="sync" />
               </a-range-picker>
             </a-form-item>
 
             <span class="table-page-search-submitButtons">
-              <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">搜索</a-button>
-              <a-button style="margin-left: 8px" icon="reload" @click="() => this.searchData = {}">重置</a-button>
+              <a-button type="primary" icon="search" @click="searchFunc" :loading="btnLoading">搜索</a-button>
+              <a-button type="primary" style="margin-left: 8px" icon="reload" @click="restFormData">重置</a-button>
+              <a-button style="margin-left: 8px; background-color: #CD853F; border: 0; color: white;" @click="gHostCallback">一键回调</a-button>
             </span>
           </div>
         </a-form>
       </div>
-
       <!-- 列表渲染 -->
-      <JeepayTableExpand
+      <JeepayTable
         @btnLoadClose="btnLoading=false"
-        @getAction="getAction"
         ref="infoTable"
         :initData="true"
         :reqTableDataFunc="reqTableDataFunc"
         :tableColumns="tableColumns"
-        :table-columns2="tableColumns2"
         :searchData="searchData"
-        :childern="childern"
+        :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange  }"
         :scrollX="1100"
-        rowKey="orderNo"
+        rowKey="id"
       >
-        <template slot="orderNo" slot-scope="{record}"><b>{{ record.orderNo }}</b></template> <!-- 自定义插槽 -->
-        <template slot="resellerNo" slot-scope="{record}"><b>{{ record.resellerNo }}</b></template> <!-- 自定义插槽 -->
-        <template slot="resellerName" slot-scope="{record}"><b>{{ record.resellerName }}</b></template> <!-- 自定义插槽 -->
-        <template slot="chargeAccountType" slot-scope="{record}" >
-          <span v-if="record.chargeAccountType === 'MOBILE'">{{ '手机号' }}</span>
-          <span v-if="record.chargeAccountType === 'PLATFORM_ACCOUNT'">{{ '他方平台账号' }}</span>
-        </template> <!-- 自定义插槽 -->
-        <template slot="orderStatus" slot-scope="{record}" >
-          <a-tag :color="record.orderStatus === 'PAYING'?'blue':record.orderStatus === 'WAITING_PAY'?'orange':record.state === 'FINISH'?'green':'volcano'">
-            {{ record.orderStatus === 'PAYING'?'支付中':record.orderStatus === 'WAITING_PAY'?'待支付':record.orderStatus === 'FINISH'?'支付成功':'未知' }}
-          </a-tag>
-        </template> <!-- 自定义插槽 -->
-        <template slot="amount" slot-scope="{record}"><b>{{ '￥'+record.amount/100 }}</b></template> <!-- 自定义插槽 -->
-        <template slot="resellerId" slot-scope="{record}"><b>{{ record.resellerId }}</b></template> <!-- 自定义插槽 -->
-        <template slot="matchOutTradeNo" slot-scope="{record}"><b>{{ record.matchOutTradeNo }}</b></template> <!-- 自定义插槽 -->
-        <template slot="productType" slot-scope="{record}">
-          <b v-if="record.productType ==='JD_E_CARD'">京东E卡</b>
-          <b v-if="record.productType ==='CTRIP'">携程任我行</b>
-        </template> <!-- 自定义插槽 -->
-        <template slot="gmtCreate" slot-scope="{record}"><b>{{ record.gmtCreate }}</b></template> <!-- 自定义插槽 -->
-        <template slot="gmtUpdate" slot-scope="{record}"><b>{{ record.gmtUpdate }}</b></template> <!-- 自定义插槽 -->
-        <template slot="chargeAccount" slot-scope="{record}"><b>{{ record.chargeAccount }}</b></template> <!-- 自定义插槽 -->
-        <template slot="queryFlag" slot-scope="{record}"><b>{{ record.queryFlag }}</b></template> <!-- 自定义插槽 -->
-
-        <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
-          <JeepayTableColumns>
-            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW')" @click="detailFunc(record.id)">详情</a-button>
-            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_EDIT')" @click="editFunc(record.id)">修改</a-button>
-            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_EDIT')" >禁用</a-button>
-            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_EDIT')" >启用</a-button>
-            <!-- <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_DELETE')" style="color: red" @click="delFunc(record.id)">删除</a-button> -->
-          </JeepayTableColumns>
+        <template slot="orderStatus" slot-scope="{record}">
+          <span v-if="record === 'PENDING'">待处理</span>
+          <span v-if="record === 'WAITING_PAY'">待匹配</span>
+          <span v-if="record === 'MATCHING'">匹配中</span>
+          <span v-if="record === 'PAYING'" style="color: orange;">匹配成功</span>
+          <span v-if="record === 'RECHARGING'" style="color: green;">充值中</span>
+          <span v-if="record === 'FINISH'" style="color: green;">充值完成</span>
+          <span v-if="record === 'HANDLE_FINISH'" style="color: green;">手动成功</span>
+          <span v-if="record === 'SLEEP'" style="color: pink;">休眠</span>
+          <span v-if="record === 'NULLIFY'" style="color: red;">已禁用</span>
+          <span v-if="record === 'RECHARGE_FAILED'" style="color: blue;">失败退款</span>
+          <span v-if="record === 'HANDLE_FAILED'" style="color: blue;">手动失败</span>
         </template>
-      </JeepayTableExpand>
+        <template slot="opSlot" slot-scope="{record}">
+          <a-button size="small" style="background-color: #45EE58; border: 0; color: white; margin-right: 4px;" @click="handleOperation(true, record.id)">手动成功</a-button>
+          <a-button size="small" type="primary" @click="handleOperation(false, record.id)">手动失败</a-button>
+          <a-button size="small" style="background-color: #CD853F; border: 0; color: white; margin-left: 4px;" @click="detail(record.id)">详情</a-button>
+        </template>
+      </JeepayTable>
     </a-card>
-    <!--    &lt;!&ndash; 新增页面组件  &ndash;&gt;-->
-    <InfoAddOrEdit ref="infoAddOrEdit" :callbackFunc="searchFunc"/>
-    <Upload ref="uploadInfo"></Upload>
     <Detail ref="detailInfo"></Detail>
-    <!--    &lt;!&ndash; 支付参数配置页面组件  &ndash;&gt;-->
-    <!--    <IsvPayIfConfigList ref="isvPayIfConfigList" />-->
+<!--    订单详情-->
+    <a-modal
+      title="核销订单详情"
+      :visible="detailDialog"
+      width="880px"
+      @cancel="() => { detailDialog = false }"
+      cancelText="关闭"
+    >
+      <a-descriptions bordered size="small">
+        <a-descriptions-item label="核销单号">
+          {{ orderDetail.orderNo }}
+        </a-descriptions-item>
+        <a-descriptions-item label="官方单号">
+          {{ orderDetail.pretenderOrderNo }}
+        </a-descriptions-item>
+        <a-descriptions-item label="核销名称">
+          {{ orderDetail.resellerName }}
+        </a-descriptions-item>
+        <a-descriptions-item label="核销回调">
+          {{ orderDetail.notifyStatus }}
+        </a-descriptions-item>
+        <a-descriptions-item label="产品类型">
+          {{ orderDetail.productType }}
+        </a-descriptions-item>
+        <a-descriptions-item label="创建时间">
+          {{ orderDetail.gmtCreate }}
+        </a-descriptions-item>
+        <a-descriptions-item label="充值账号">
+          {{ orderDetail.chargeAccount }}
+        </a-descriptions-item>
+        <a-descriptions-item label="过期时间">
+          {{ orderDetail.gmtExpire }}
+        </a-descriptions-item>
+        <a-descriptions-item label="订单金额">
+          {{ orderDetail.amount }}
+        </a-descriptions-item>
+        <a-descriptions-item label="匹配时间">
+          {{ orderDetail.gmtPayingStart }}
+        </a-descriptions-item>
+        <a-descriptions-item label="完成时间">
+          {{ orderDetail.gmtFinish }}
+        </a-descriptions-item>
+        <a-descriptions-item label="核销状态">
+          {{ orderDetail.orderStatus }}
+        </a-descriptions-item>
+        <a-descriptions-item label="商户单号">
+          {{ orderDetail.resellerOrderNo }}
+        </a-descriptions-item>
+      </a-descriptions>
+    </a-modal>
   </page-header-wrapper>
 </template>
 <script>
-import JeepayTableExpand from '@/components/JeepayTable/JeepayTableExpand'
-import JeepayTextUp from '@/components/JeepayTextUp/JeepayTextUp' // 文字上移组件
-import JeepayTableColumns from '@/components/JeepayTable/JeepayTableColumns'
-import { API_URL_RESELLER_ORDER_LIST, API_URL_PRETENDER_ORDER_SEARCH, req } from '@/api/manage'
-import moment from 'moment'
+import JeepayTable from '../../components/JeepayTable/JeepayTable'
+import JeepayTextUp from '../../components/JeepayTextUp/JeepayTextUp' // 文字上移组件
 import InfoAddOrEdit from './AddOrEdit'
-import Upload from '@/views/reseller/Upload'
+import Upload from '../../views/reseller/Upload'
 import Detail from './Detail'
-// import IsvPayIfConfigList from './IsvPayIfConfigList'
+import { accountList } from '../../api/account'
+import { failOrderCallback, getOrdertDetail, getResellerOrderList, orderNotice } from '../../api/resellerOrder'
 
-// eslint-disable-next-line no-unused-vars
 const tableColumns = [
-  { key: 'orderNo', width: '200px', title: '核销订单号', scopedSlots: { customRender: 'orderNo' } },
-  { key: 'resellerNo', width: '200px', title: '核销商ID', scopedSlots: { customRender: 'resellerNo' } },
-  { key: 'resellerName', width: '150px', title: '核销商名称', scopedSlots: { customRender: 'resellerName' } },
-  { key: 'amount', width: '150px', title: '金额', scopedSlots: { customRender: 'amount' } },
-  { key: 'orderStatus', width: '150px', title: '订单状态', scopedSlots: { customRender: 'orderStatus' } },
-  { key: 'channelOrderNo', width: '180px', title: '官方单号', scopedSlots: { customRender: 'channelOrderNo' } },
-  { key: 'productType', width: '200px', title: '业务类型', scopedSlots: { customRender: 'productType' } },
-  { key: 'chargeAccount', width: '150px', title: '充值账号 ', scopedSlots: { customRender: 'chargeAccount' } },
-  { key: 'gmtCreate', width: '180px', title: '创建时间', scopedSlots: { customRender: 'gmtCreate' } },
-  { key: 'gmtPayingEnd', width: '180px', title: '支付完成时间', scopedSlots: { customRender: 'gmtPayingEnd' } },
-  { key: 'x', width: '180px', title: '到账时间', scopedSlots: { customRender: 'x' } },
-  // { key: 'gmtUpdate', width: '180px', title: '更新日期', scopedSlots: { customRender: 'gmtUpdate' } },
+  { key: 'id', width: '100px', title: '序号', dataIndex: 'id' },
+  { key: 'orderNo', width: '200px', title: '核销订单号', dataIndex: 'orderNo' },
+  { key: 'matchOutTradeNo', width: '200px', title: '商户单号', dataIndex: 'matchOutTradeNo' },
+  { key: 'resellerName', width: '150px', title: '核销商名称', dataIndex: 'resellerName' },
+  {
+    key: 'productType',
+    width: '150px',
+    title: '产品类型',
+    dataIndex: 'productType',
+    customRender: (text, record) => {
+      if (text) {
+        switch (text) {
+          case 'JD_E_CARD':
+            return '京东E卡'
+          case 'SINOPEC':
+            return '中国石化'
+          case 'PETRO':
+            return '中国石油'
+          case 'CTRIP':
+            return '携程任我行'
+          case 'TEST_PRODUCT':
+            return '测试产品'
+        }
+      } else {
+        return ''
+      }
+    }
+},
+  { key: 'chargeAccount', width: '150px', title: '充值账号', dataIndex: 'chargeAccount' },
+  {
+    key: 'amount',
+    width: '150px',
+    title: '订单金额',
+    dataIndex: 'amount',
+    customRender: (text) => {
+      if (text) {
+        return text / 100
+      }
+    }
+  },
+  { key: 'orderStatus', width: '150px', title: '核销状态', dataIndex: 'orderStatus', scopedSlots: { customRender: 'orderStatus' } },
+  { key: 'sleepCount', width: '150px', title: '休眠次数', dataIndex: 'sleepCount' },
+  { key: 'pretenderOrderNo', width: '180px', title: '官方单号', dataIndex: 'pretenderOrderNo' },
+  {
+    key: 'notifyStatus',
+    width: '180px',
+    title: '核销回调',
+    dataIndex: 'notifyStatus',
+    customRender: (text, record) => {
+      if (text) {
+        switch (text) {
+          case 'WAIT_NOTIFY':
+            return '待回调'
+          case 'NOTIFY_SUCCESS':
+            return '回调成功'
+          case 'NOTIFY_FAILED':
+            return '回调失败'
+        }
+      }
+    }
+  },
+  { key: 'gmtCreate', width: '180px', title: '创建时间', dataIndex: 'gmtCreate' },
+  { key: 'gmtExpire', width: '180px', title: '过期时间', dataIndex: 'gmtExpire' },
+  { key: 'gmtPayingStart', width: '180px', title: '匹配时间', dataIndex: 'gmtPayingStart' },
+  { key: 'gmtFinish', width: '180px', title: '完成时间', dataIndex: 'gmtFinish' },
   { key: 'op', title: '操作', width: '260px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }
-]
-
-const tableColumns2 = [
-
-  { key: 'id', width: '200px', dataIndex: 'id', title: 'ID', scopedSlots: { customRender: 'id' } },
-  { key: 'bizType', width: '200px', dataIndex: 'bizType', title: '业务类型', customRender: (text, record, index) => { return record.bizType === 'PROPERTY_CREDIT' ? '资和信' : '未知' } },
-  { key: 'outTradeNo', width: '150px', dataIndex: 'outTradeNo', title: '订单号', scopedSlots: { customRender: 'outTradeNo' } },
-  { key: 'status', width: '150px', dataIndex: 'status', title: '状态', customRender: (text, record, index) => { return record.status === 'PAYING' ? '支付中' : record.status === 'OVER_TIME' ? '超时' : record.status === 'FINISH' ? '完成支付' : '未知' } },
-  { key: 'pretenderAccountId', dataIndex: 'pretenderAccountId', width: '150px', title: '伪装小号ID', scopedSlots: { customRender: 'pretenderAccountId' } },
-  { key: 'amount', width: '150px', dataIndex: 'amount', title: '金额', customRender: (text, record, index) => { return '￥' + record.amount / 100 } },
-  { key: 'payWay', width: '150px', dataIndex: 'payWay', title: '支付方式', customRender: (text, record, index) => { return record.payWay === 'ALI_WAP' ? '支付宝网页' : record.payWay === 'WX_H5' ? '微信H5' : '未知' } },
-  // { key: 'payUrl', width: '150px', title: 'URL连接', scopedSlots: { customRender: 'payUrl' } },
-  { key: 'gmtNotify', width: '150px', dataIndex: 'gmtNotify', title: '回调时间', scopedSlots: { customRender: 'gmtNotify' } },
-  { key: 'matchResellerOrderNo', dataIndex: 'matchResellerOrderNo', width: '150px', title: '核销商订单', scopedSlots: { customRender: 'matchResellerOrderNo' } },
-  { key: 'ext', width: '150px', dataIndex: 'ext', title: '扩展字段', scopedSlots: { customRender: 'ext' } },
-  { key: 'productType', width: '150px', dataIndex: 'productType', title: '产品类型', customRender: (text, record, index) => { return record.productType === 'JD_E_CARD' ? '京东E卡' : record.productType === 'CTRIP' ? '携程任我行' : '未知' } },
-  { key: 'gmtExpired', width: '150px', dataIndex: 'gmtExpired', title: '过期时间', scopedSlots: { customRender: 'gmtExpired' } },
-  { key: 'gmtCreate', width: '150px', dataIndex: 'gmtCreate', title: '创建日期', scopedSlots: { customRender: 'gmtCreate' } }
 ]
 
 export default {
   name: 'ResellerList',
-  components: { JeepayTableExpand, JeepayTableColumns, JeepayTextUp, InfoAddOrEdit, Upload, Detail },
+  components: { JeepayTable, JeepayTextUp, InfoAddOrEdit, Upload, Detail },
 
   data () {
-    // const data = []
-    // for (let i = 0; i < 3; ++i) {
-    //   data.push({
-    //     key: i,
-    //     date: '2014-12-24 23:12:00',
-    //     name: 'This is production name',
-    //     upgradeNum: 'Upgraded: 56'
-    //   })
-    // }
     return {
       btnLoading: false,
       tableColumns: tableColumns,
-      tableColumns2: tableColumns2,
+      selectedRowKeys: [],
       searchData: {},
-      childern: []
-
+      isSuccess: undefined,
+      batchManual: {
+        isSuccess: undefined,
+        resellerOrderIds: []
+      },
+      reSellerList: [],
+      daterange: [],
+      detailDialog: false,
+      orderDetail: {},
+      orderDetailKeys: []
     }
   },
   mounted () {
+    this.getReSeller()
   },
   methods: {
-    getAction (record) {
-      const that = this
-      that.childern = []
-      if (record.orderStatus !== 'FINISH') {
-        that.$message.error('该核销订单不存在关联支付渠道订单')
-        return
-      }
-      req.list(API_URL_PRETENDER_ORDER_SEARCH + '/' + record.orderNo).then(res => {
-        that.childern.push(res)
+    // 获取核销商列表
+    getReSeller () {
+      accountList({ pageNumber: 1, pageSize: 9999 }).then(res => {
+        this.reSellerList = res.records.map(item => {
+          return {
+            resellerName: item.resellerName,
+            resellerNo: item.resellerNo
+          }
+        })
       })
-    },
-    disabledDate (current) { // 今日之后日期不可选
-      return current && current > moment().endOf('day')
     },
     onChange (date, dateString) {
       this.searchData.createdStart = dateString[0] // 开始时间
       this.searchData.createdEnd = dateString[1] // 结束时间
     },
-    queryFunc () {
-      this.btnLoading = true
-      this.$refs.infoTable.refTable(true)
-    },
     // 请求table接口数据
     reqTableDataFunc: (params) => {
-      return req.list(API_URL_RESELLER_ORDER_LIST, params)
+      return getResellerOrderList(params)
     },
-    delFunc: function (recordId) {
-      const that = this
-      this.$infoBox.confirmDanger('确认删除？', '该操作将删除该核销订单', () => {
-        req.delById(API_URL_RESELLER_ORDER_LIST, recordId).then(res => {
-          that.$refs.infoTable.refTable(false)
-          this.$message.success('删除成功')
-        })
-      })
-    },
-    searchFunc: function () { // 点击【查询】按钮点击事件
+    searchFunc () { // 点击【查询】按钮点击事件
       this.$refs.infoTable.refTable(true)
     },
-
-    editFunc: function (recordId) { // 业务通用【修改】 函数
-      this.$refs.infoAddOrEdit.show(recordId)
-    },
-    detailFunc: function (recordId) { // 业务通用【详情】 函数
+    detailFunc (recordId) { // 业务通用【详情】 函数
       this.$refs.detailInfo.show(recordId)
-    }
+    },
+    // 充值表单
+    restFormData () {
+      this.searchData = {}
+      this.daterange = []
+      this.isSuccess = undefined
+      this.$nextTick(() => {
+        this.searchFunc()
+      })
+    },
+    // 查看详情
+    detail (id) {
+      getOrdertDetail(id).then(res => {
+        this.detailDialog = true
+        this.orderDetail = res
+        this.orderDetailKeys = Object.keys(this.orderDetail)
+      })
+    },
+  //  手动操作
+    handleOperation (status, id) {
+      const _params = {
+        isSuccess: status,
+        resellerOrderIds: [id]
+      }
+      orderNotice(_params).then(res => {
+        if (res.code === 0) {
+          this.$message.success('操作成功')
+        } else {
+          this.$message.error('操作失败')
+        }
+        this.searchFunc()
+      })
+    },
+    selectChange (value) {
+      this.batchManual.isSuccess = !!value;
+    },
+    batchExecute () {
+      // 获取当前页下的所有id
+      this.batchManual.resellerOrderIds = this.selectedRowKeys
+      orderNotice(this.batchManual).then(res => {
+        if (res.code === 0) {
+          this.$message.success('操作成功')
+        } else {
+          this.$message.error('操作失败')
+        }
+        this.searchFunc()
+      })
+    },
+    // 一键回调
+    gHostCallback () {
+      failOrderCallback().then(res => {
+        if (res.code === 0) {
+          this.$message.success('操作成功')
+        } else {
+          this.$message.error('操作失败')
+        }
+        this.searchFunc()
+      })
+    },
+    onSelectChange(selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys;
+    },
   }
 }
 </script>

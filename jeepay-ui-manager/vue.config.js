@@ -33,7 +33,12 @@ const vueConfig = {
       })
     ],
     // if prod, add externals
-    externals: {}
+    externals: {},
+    resolve: {
+      alias: {
+        '@': resolve('src')
+      }
+    }
   },
 
   chainWebpack: (config) => {

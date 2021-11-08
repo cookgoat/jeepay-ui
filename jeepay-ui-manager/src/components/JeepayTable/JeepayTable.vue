@@ -15,6 +15,7 @@
       @change="handleTableChange"
       :row-selection="rowSelection"
       :rowKey="rowKey"
+      :bordered="bordered"
       :scroll="{ x: scrollX }"
     >
       <!-- 自定义列插槽， 参考：https://github.com/feseed/admin-antd-vue/blob/master/src/components/ShTable.vue  -->
@@ -41,14 +42,22 @@ export default {
     pageSize: { type: Number, default: 10 }, // 默认每页条数
     rowSelection: Object, // checkbox选择
     rowKey: { type: [String, Function] }, // 定义rowKey 如果不定义将会出现（树状结构出问题， checkbox不消失等）
-    scrollX: { type: Number, default: 800 } // 表格显示滚动条的宽度
+    scrollX: { type: Number, default: 800 }, // 表格显示滚动条的宽度
+    bordered: { type: Boolean, default: false }
   },
 
   data () {
     return {
       apiResData: { total: 0, records: [] }, // 接口返回数据
       iPage: { pageNumber: 1, pageSize: this.pageSize }, // 默认table 分页/排序请求后端格式
-      pagination: { total: 0, current: 1, pageSize: this.pageSize, showSizeChanger: true, showTotal: total => `共${total}条` }, // ATable 分页配置项
+      pagination: {
+        total: 0,
+        current: 1,
+        pageSize: this.pageSize,
+        showSizeChanger: true,
+        showTotal: total => `共${total}条`,
+        pageSizeOptions: ['10', '20', '50', '100']
+      }, // ATable 分页配置项
       showLoading: false
     }
   },
@@ -86,8 +95,17 @@ export default {
       // 更新检索数据
       this.showLoading = true
       this.reqTableDataFunc(Object.assign({}, this.iPage, this.searchData)).then(resData => {
-        this.pagination.total = resData.total // 更新总数量
-        this.apiResData = resData // 列表数据更新
+        if (typeof resData === 'object' && resData.length) {
+          const data = {
+            total: resData.length,
+            records: resData
+          }
+          this.pagination.total = resData.length // 更新总数量
+          this.apiResData = data
+        } else {
+          this.pagination.total = resData.total // 更新总数量
+          this.apiResData = resData // 列表数据更新
+        }
         this.showLoading = false // 关闭loading
 
         // 数据为0 ，并且为当前页面没有在第一页则需要自动跳转到上一页（解决，删除第二页数据全部删除后无数据的情况 ）

@@ -16,6 +16,7 @@ import './global.less' // global style
 import 'ant-design-vue/dist/antd.less'
 import infoBox from '@/utils/infoBox'
 import VueClipboard from 'vue-clipboard2' // 复制插件
+import mixin from '../src/utils/mixin'
 
 Vue.config.productionTip = false
 
@@ -25,6 +26,8 @@ Vue.component('pro-layout', ProLayout)
 Vue.component('page-container', PageHeaderWrapper)
 Vue.component('page-header-wrapper', PageHeaderWrapper)
 Vue.use(VueClipboard) // 复制插件
+
+Vue.mixin(mixin)
 
 /**
  * @description 全局注册权限验证

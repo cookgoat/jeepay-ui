@@ -20,7 +20,7 @@ export const asyncRouteDefine = {
 
   'CurrentUserInfo': { defaultPath: '/current/userinfo', component: () => import('@/views/current/UserinfoPage') }, // 用户设置
 
-  'MainPage': { defaultPath: '/main', component: () => import('@/views/dashboard/Analysis') },
+  'MainPage': { defaultPath: '/main', component: () => import('@/views/dashboard/main') },
   'SysUserPage': { defaultPath: '/users', component: () => import('@/views/sysuser/SysUserPage') },
   'RolePage': { defaultPath: '/roles', component: () => import('@/views/role/RolePage') },
   'EntPage': { defaultPath: '/ents', component: () => import('@/views/ent/EntPage') },
@@ -42,6 +42,9 @@ export const asyncRouteDefine = {
   'ResellerAccountGroupPage': { defaultPath: '/resellerAccountGroup', component: () => import('@/views/reseller/account/AccountList') }, // 核销商管理
   'ResellerFundAccountGroupPage': { defaultPath: '/resellerFundAccountGroup', component: () => import('@/views/reseller/resellerFundAccount/resellerFundAccountList') }, // 核销资金管理
   'ResellerFundLineGroupPage': { defaultPath: '/resellerFundLineGroup', component: () => import('@/views/reseller/resellerFundAccount/resellerFundLineList') }, // 核销资金流水管理
-  'ResellerProductGroupPage': { defaultPath: '/resellerProductGroup', component: () => import('@/views/reseller/product/ProductList') } // 核销产品管理
-
+  'ResellerProductGroupPage': { defaultPath: '/resellerProductGroup', component: () => import('@/views/reseller/product/ProductList') }, // 核销产品管理
+  'matchConfigPage': { defaultPath: '/matchconfig', component: () => import('@/views/channelSetting/ChannelSetting') }, // 通道管理页面
+  'ENT_RESELLER_RETURN_GROUP': { defaultPath: '/collection-list', component: () => import('@/views/collection/collectionList') },
+  'ENT_RESELLER_AGENT_GROUP': { defaultPath: '/agentList', component: () => import('@/views/agent/agentList') },
+  'ENT_RESELLER_DETAIL_GROUP': { default: '/resellerDetailGroup', component: () => import('@/views/collection/resellerDetailGroup') }
 }

@@ -4,74 +4,73 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline" class="table-head-ground">
           <div class="table-layer">
-            <jeepay-text-up :placeholder="'商户订单号'" :msg="searchData.mchOrderNo" v-model="searchData.mchOrderNo" />
-            <jeepay-text-up :placeholder="'支付订单号'" :msg="searchData.payOrderId" v-model="searchData.payOrderId" />
-            <jeepay-text-up :placeholder="'官方单号'" :msg="searchData.channelOrderNo" v-model="searchData.mchNo" />
-            <jeepay-text-up :placeholder="'核销商ID'" :msg="searchData.resellerNo" v-model="searchData.mchNo" />
-            <jeepay-text-up :placeholder="'核销商名称'" :msg="searchData.resellerName" v-model="searchData.mchNo" />
-            <!-- <jeepay-text-up :placeholder="'商户号'" :msg="searchData.mchNo" v-model="searchData.mchNo" /> -->
-            <!-- <jeepay-text-up :placeholder="'服务商号'" :msg="searchData.isvNo" v-model="searchData.isvNo" /> -->
-            <!-- <jeepay-text-up :placeholder="'应用AppId'" :msg="searchData.appId" v-model="searchData.appId"/> -->
-            <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.state" placeholder="支付状态" default-value="">
-                <a-select-option value="">全部</a-select-option>
-                <a-select-option value="0">订单生成</a-select-option>
-                <a-select-option value="1">支付中</a-select-option>
-                <a-select-option value="2">支付成功</a-select-option>
-                <a-select-option value="3">支付失败</a-select-option>
-                <a-select-option value="4">已撤销</a-select-option>
-                <a-select-option value="5">已退款</a-select-option>
-                <a-select-option value="6">订单关闭</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.notifyState" placeholder="回调状态" default-value="">
-                <a-select-option value="">全部</a-select-option>
-                <a-select-option value="0">未发送</a-select-option>
-                <a-select-option value="1">已发送</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item v-if="$access('ENT_PAY_ORDER_SEARCH_PAY_WAY')" label="" class="table-head-layout">
-              <a-select v-model="searchData.wayCode" placeholder="支付方式" default-value="">
-                <a-select-option value="">全部</a-select-option>
-                <a-select-option :key="item.wayCode" v-for="item in payWayList" :value="item.wayCode">
-                  {{ item.wayName }}
+            <jeepay-text-up :placeholder="'商户订单号'" :msg="searchData.mchOrderNo" v-model="searchData.mchOrderNo"/>
+            <jeepay-text-up :placeholder="'官方单号'" :msg="searchData.channelOrderNo" v-model="searchData.channelOrderNo"/>
+            <jeepay-text-up :placeholder="'充值账号'" :msg="searchData.chargeAccount " v-model="searchData.chargeAccount "/>
+            <a-form-item class="table-head-layout">
+              <a-select v-model="searchData.amount" placeholder="订单金额">
+                <a-select-option v-for="(item, index) in moneyList" :value="item.value" :key="index">
+                  {{ item.name }}
                 </a-select-option>
               </a-select>
             </a-form-item>
             <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.amountSearch" placeholder="支付金额" default-value="">
-                <a-select-option value="10000">100</a-select-option>
-                <a-select-option value="20000">200</a-select-option>
-                <a-select-option value="50000">500</a-select-option>
-                <a-select-option value="100000">1000</a-select-option>
+              <a-select v-model="searchData.state" placeholder="支付状态" default-value="">
+                <a-select-option value="0">匹配中</a-select-option>
+                <a-select-option value="1">匹配成功</a-select-option>
+                <a-select-option value="2">支付成功</a-select-option>
+                <a-select-option value="3">超时失败</a-select-option>
+                <a-select-option value="4">已撤销</a-select-option>
+                <a-select-option value="5">失败退款</a-select-option>
+                <a-select-option value="6">订单关闭</a-select-option>
               </a-select>
             </a-form-item>
-            <!-- <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.divisionState" placeholder="分账状态" default-value="">
-                <a-select-option value="">全部</a-select-option>
-                <a-select-option value="0">未发生分账</a-select-option>
-                <a-select-option value="1">等待分账任务处理</a-select-option>
-                <a-select-option value="2">分账处理中</a-select-option>
-                <a-select-option value="3">分账任务已结束（状态请看分账记录）</a-select-option>
+            <a-form-item class="table-head-layout">
+              <a-select v-model="searchData.notifyState" placeholder="支付回调">
+                <a-select-option value="1">已发送</a-select-option>
+                <a-select-option value="2">未发送</a-select-option>
               </a-select>
-            </a-form-item> -->
-            <!-- <a-form-item label="订单金额">
-              <a-input-number v-model="searchData.amountSearch" placeholder="请输入" :min="1" :max="9999999999999" />
-            </a-form-item> -->
+            </a-form-item>
+            <a-form-item class="table-head-layout">
+              <a-select v-model="searchData.resellerNotifyStatus" placeholder="核销回调">
+                <a-select-option value="WAIT_NOTIFY">待回调</a-select-option>
+                <a-select-option value="NOTIFY_SUCCESS">已发送</a-select-option>
+                <a-select-option value="NOTIFY_FAILED">未发送</a-select-option>
+              </a-select>
+            </a-form-item>
+            <jeepay-text-up :placeholder="'核销单号'" :msg="searchData.resellerOrderNo  "
+                            v-model="searchData.resellerOrderNo  "/>
+            <a-form-item class="table-head-layout">
+              <a-select v-model="searchData.resellerName" placeholder="请选择核销商">
+                <a-select-option v-for="item in reSellerList" :key="item.resellerNo" :value="item.resellerName">
+                  {{ item.resellerName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+
+            <a-form-item label="" class="table-head-layout">
+              <a-select v-model="searchData.resellerOrderStatus" placeholder="核销状态" default-value="">
+                <a-select-option v-for="(item, index) in orderStatus" :key="index" :value="item.value">
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+            <a-form-item label="" class="table-head-layout">
+              <a-select v-model="searchData.productType" placeholder="产品类型" default-value="">
+                <a-select-option v-for="(item, index) in productTypeList" :key="index" :value="item.value">{{
+                    item.name
+                  }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
             <a-form-item label="" class="table-head-layout" style="max-width:350px;min-width:300px">
-              <a-range-picker
-                @change="onChange"
-                :show-time="{ format: 'HH:mm:ss' }"
-                format="YYYY-MM-DD HH:mm:ss"
-                :disabled-date="disabledDate"
-              >
-                <a-icon slot="suffixIcon" type="sync" />
-              </a-range-picker>
+              <a-range-picker @change="onChange" v-model="daterange"></a-range-picker>
             </a-form-item>
             <span class="table-page-search-submitButtons">
               <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">搜索</a-button>
-              <a-button style="margin-left: 8px" icon="reload" @click="() => this.searchData = {}">重置</a-button>
+              <a-button style="margin-left: 8px" icon="reload" @click="resetFormData">重置</a-button>
+              <a-button style="margin-left: 8px; background-color: #CD853F; color: white; border: 0;"
+                        @click="batchCallback">一键回调</a-button>
             </span>
           </div>
         </a-form>
@@ -89,40 +88,64 @@
         :scrollX="1550"
       >
         <template slot="mchName" slot-scope="{record}"><b>{{ record.mchName }}</b></template> <!-- 自定义插槽 -->
+        <template slot="productType" slot-scope="{record}">
+          {{
+            record.productType === 'JD_E_CARD' ? '京东E卡' : record.productType === 'SINOPEC' ? '中国石化' : record.productType === 'PETRO' ? '中国石油' : record.productType === 'CTRIP' ? '携程任我行' : '测试产品'
+          }}
+        </template>
         <template slot="stateSlot" slot-scope="{record}">
           <a-tag
             :key="record.state"
-            :color="record.state === 0?'blue':record.state === 1?'orange':record.state === 2?'green':'volcano'"
+            :color="record.state === 0?'blue':
+            record.state === 1?'orange':
+            record.state === 2?'green':
+            record.state === 3 ? 'pink' :
+            record.state === 5 ? 'blue' : 'violet'"
           >
-            {{ record.state === 0?'订单生成':record.state === 1?'支付中':record.state === 2?'支付成功':record.state === 3?'支付失败':record.state === 4?'已撤销':record.state === 5?'已退款':record.state === 6?'订单关闭':'未知' }}
+            {{
+              record.state === 0 ? '订单生成' :
+              record.state === 1 ? '支付中' :
+              record.state === 2 ? '支付成功' :
+              record.state === 3 ? '支付失败' :
+              record.state === 4 ? '已撤销' :
+              record.state === 5 ? '已退款' :
+              record.state === 6 ? '订单关闭' : '匹配中'
+            }}
           </a-tag>
         </template>
-        <template slot="refundStateSlot" slot-scope="{record}">
-          <a-tag
-            :key="record.refundState"
-            :color="record.refundState === 0?'blue':record.refundState === 1?'orange':record.refundState === 2?'green':'volcano'"
-          >
-            {{ record.refundState === 0?'未发起':record.refundState === 1?'部分退款':record.refundState === 2?'全额退款':'未知' }}
-          </a-tag>
+        <template slot="resellerOrderStatus" slot-scope="{record}">
+          {{ record.resellerOrderStatus }}
         </template>
-        <template slot="divisionStateSlot" slot-scope="{record}">
-          <a-tag color="blue" v-if="record.divisionState == 0">未发生分账</a-tag>
-          <a-tag color="orange" v-else-if="record.divisionState == 1">待分账</a-tag>
-          <a-tag color="red" v-else-if="record.divisionState == 2">分账处理中</a-tag>
-          <a-tag color="green" v-else-if="record.divisionState == 3">任务已结束</a-tag>
-          <a-tag color="#f50" v-else>未知</a-tag>
+        <!--        支付回调-->
+        <template slot="notifyState" slot-scope="{record}">
+          <template v-if="record.notifyState === 0">
+            <span style="color: red;">未发送</span>
+          </template>
+          <template v-if="record.notifyState === 1">
+            <span style="color: green;">已发送</span>
+          </template>
         </template>
-        <template slot="notifySlot" slot-scope="{record}">
-          <a-badge :status="record.notifyState === 1?'processing':'error'" :text="record.notifyState === 1?'已发送':'未发送'" />
+        <!--        核销回调-->
+        <template slot="resellerNotifyStatus" slot-scope="{record}">
+          <template v-if="record.resellerNotifyStatus === 'WAIT_NOTIFY'">
+            <span>待回调</span>
+          </template>
+          <template v-if="record.resellerNotifyStatus === 'NOTIFY_SUCCESS'">
+            <span style="color: forestgreen;">已发送</span>
+          </template>
+          <template v-if="record.resellerNotifyStatus === 'NOTIFY_FAILED'">
+            <span style="color: red;">未发送</span>
+          </template>
         </template>
         <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
-          <JeepayTableColumns>
-            <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="searchOrder(record.channelOrderNo)">查单</a-button>
-            <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="concatOrder(record.payOrderId, record.state)">补单</a-button>
-            <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="detailFunc(record.payOrderId)">详情</a-button>
-
-            <a-button type="link" v-if="$access('ENT_PAY_ORDER_REFUND')" style="color: red" v-show="(record.state === 2 && record.refundState !== 2)" @click="openFunc(record, record.payOrderId)">退款</a-button>
-          </JeepayTableColumns>
+          <a-button type="link" @click="searchOrder(record.channelOrderNo)">查单</a-button>
+          <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')"
+                    @click="concatOrder(record.payOrderId, record.state)">补单
+          </a-button>
+          <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="detailFunc(record.payOrderId)">详情
+          </a-button>
+          <a-button type="link" v-if="$access('ENT_PAY_ORDER_VIEW')" @click="detailFunc(record.payOrderId)">日志
+          </a-button>
         </template>
       </JeepayTable>
     </a-card>
@@ -143,7 +166,7 @@
           <a-col :sm="12">
             <a-descriptions>
               <a-descriptions-item label="所属系统">
-                {{ detailData.mchType === 1?'普通商户':detailData.mchType === 2?'特约商户':'未知' }}
+                {{ detailData.mchType === 1 ? '普通商户' : detailData.mchType === 2 ? '特约商户' : '未知' }}
               </a-descriptions-item>
             </a-descriptions>
           </a-col>
@@ -188,22 +211,31 @@
             <a-descriptions>
               <a-descriptions-item label="支付金额">
                 <a-tag color="green">
-                  {{ detailData.amount/100 }}
+                  {{ detailData.amount / 100 }}
                 </a-tag>
               </a-descriptions-item>
             </a-descriptions>
           </a-col>
           <a-col :sm="12">
-            <a-descriptions><a-descriptions-item label="手续费"><a-tag color="pink">{{ detailData.mchFeeAmount/100 }}</a-tag></a-descriptions-item></a-descriptions>
+            <a-descriptions>
+              <a-descriptions-item label="手续费">
+                <a-tag color="pink">{{ detailData.mchFeeAmount / 100 }}</a-tag>
+              </a-descriptions-item>
+            </a-descriptions>
           </a-col>
           <a-col :sm="12">
-            <a-descriptions><a-descriptions-item label="商家费率">{{ (detailData.mchFeeRate*100).toFixed(2) }}%</a-descriptions-item></a-descriptions>
+            <a-descriptions>
+              <a-descriptions-item label="商家费率">{{ (detailData.mchFeeRate * 100).toFixed(2) }}%</a-descriptions-item>
+            </a-descriptions>
           </a-col>
           <a-col :sm="12">
             <a-descriptions>
               <a-descriptions-item label="订单状态">
-                <a-tag :color="detailData.state === 0?'blue':detailData.state === 1?'orange':detailData.state === 2?'green':'volcano'">
-                  {{ detailData.state === 0?'订单生成':detailData.state === 1?'支付中':detailData.state === 2?'支付成功':detailData.state === 3?'支付失败':detailData.state === 4?'已撤销':detailData.state === 5?'已退款':detailData.state === 6?'订单关闭':'未知' }}
+                <a-tag
+                  :color="detailData.state === 0?'blue':detailData.state === 1?'orange':detailData.state === 2?'green':'volcano'">
+                  {{
+                    detailData.state === 0 ? '订单生成' : detailData.state === 1 ? '支付中' : detailData.state === 2 ? '支付成功' : detailData.state === 3 ? '支付失败' : detailData.state === 4 ? '已撤销' : detailData.state === 5 ? '已退款' : detailData.state === 6 ? '订单关闭' : '未知'
+                  }}
                 </a-tag>
               </a-descriptions-item>
             </a-descriptions>
@@ -212,7 +244,7 @@
             <a-descriptions>
               <a-descriptions-item label="回调状态">
                 <a-tag :color="detailData.notifyState === 1?'green':'volcano'">
-                  {{ detailData.notifyState === 0?'未发送':detailData.notifyState === 1?'已发送':'未知' }}
+                  {{ detailData.notifyState === 0 ? '未发送' : detailData.notifyState === 1 ? '已发送' : '未知' }}
                 </a-tag>
               </a-descriptions-item>
             </a-descriptions>
@@ -266,7 +298,7 @@
               </a-descriptions-item>
             </a-descriptions>
           </a-col>
-          <a-divider />
+          <a-divider/>
           <a-col :sm="12">
             <a-descriptions>
               <a-descriptions-item label="商品标题">
@@ -340,8 +372,11 @@
           <a-col :sm="12">
             <a-descriptions>
               <a-descriptions-item label="退款状态">
-                <a-tag :color="detailData.refundState === 0?'blue':detailData.refundState === 1?'orange':detailData.refundState === 2?'green':'volcano'">
-                  {{ detailData.refundState === 0?'未发起':detailData.refundState === 1?'部分退款':detailData.refundState === 2?'全额退款':'未知' }}
+                <a-tag
+                  :color="detailData.refundState === 0?'blue':detailData.refundState === 1?'orange':detailData.refundState === 2?'green':'volcano'">
+                  {{
+                    detailData.refundState === 0 ? '未发起' : detailData.refundState === 1 ? '部分退款' : detailData.refundState === 2 ? '全额退款' : '未知'
+                  }}
                 </a-tag>
               </a-descriptions-item>
             </a-descriptions>
@@ -357,34 +392,40 @@
             <a-descriptions>
               <a-descriptions-item label="退款总额">
                 <a-tag color="cyan" v-if="detailData.refundAmount">
-                  {{ detailData.refundAmount/100 }}
+                  {{ detailData.refundAmount / 100 }}
                 </a-tag>
               </a-descriptions-item>
             </a-descriptions>
           </a-col>
-          <a-divider />
+          <a-divider/>
           <a-col :sm="12">
-            <a-descriptions><a-descriptions-item label="订单分账模式">
-              <span v-if="detailData.divisionMode == 0">该笔订单不允许分账</span>
-              <span v-else-if="detailData.divisionMode == 1">支付成功按配置自动完成分账</span>
-              <span v-else-if="detailData.divisionMode == 2">商户手动分账(解冻商户金额)</span>
-              <span v-else>未知</span>
-            </a-descriptions-item></a-descriptions>
+            <a-descriptions>
+              <a-descriptions-item label="订单分账模式">
+                <span v-if="detailData.divisionMode == 0">该笔订单不允许分账</span>
+                <span v-else-if="detailData.divisionMode == 1">支付成功按配置自动完成分账</span>
+                <span v-else-if="detailData.divisionMode == 2">商户手动分账(解冻商户金额)</span>
+                <span v-else>未知</span>
+              </a-descriptions-item>
+            </a-descriptions>
           </a-col>
           <a-col :sm="12">
-            <a-descriptions><a-descriptions-item label="分账状态">
-              <a-tag color="blue" v-if="detailData.divisionState == 0">未发生分账</a-tag>
-              <a-tag color="orange" v-else-if="detailData.divisionState == 1">待分账</a-tag>
-              <a-tag color="red" v-else-if="detailData.divisionState == 2">分账处理中</a-tag>
-              <a-tag color="green" v-else-if="detailData.divisionState == 3">任务已结束</a-tag>
-              <a-tag color="#f50" v-else>未知</a-tag>
-            </a-descriptions-item></a-descriptions>
+            <a-descriptions>
+              <a-descriptions-item label="分账状态">
+                <a-tag color="blue" v-if="detailData.divisionState == 0">未发生分账</a-tag>
+                <a-tag color="orange" v-else-if="detailData.divisionState == 1">待分账</a-tag>
+                <a-tag color="red" v-else-if="detailData.divisionState == 2">分账处理中</a-tag>
+                <a-tag color="green" v-else-if="detailData.divisionState == 3">任务已结束</a-tag>
+                <a-tag color="#f50" v-else>未知</a-tag>
+              </a-descriptions-item>
+            </a-descriptions>
           </a-col>
           <a-col :sm="12">
-            <a-descriptions><a-descriptions-item label="最新分账发起时间">{{ detailData.divisionLastTime }}</a-descriptions-item></a-descriptions>
+            <a-descriptions>
+              <a-descriptions-item label="最新分账发起时间">{{ detailData.divisionLastTime }}</a-descriptions-item>
+            </a-descriptions>
           </a-col>
         </a-row>
-        <a-divider />
+        <a-divider/>
         <a-row justify="start" type="flex">
           <a-col :sm="24">
             <a-form-model-item label="扩展参数">
@@ -416,24 +457,64 @@ import {
 import moment from 'moment'
 import axios from 'axios'
 import Detail from './searchOrderDetail'
+import { batchResend, getChannelDetail, getOrderDetail, getPayOrderList } from '../../../api/order'
+import { accountList } from '../../../api/account'
 
 // eslint-disable-next-line no-unused-vars
 const tableColumns = [
-  { key: 'mchName', title: '商户名称', ellipsis: true, width: '130px', fixed: 'left', scopedSlots: { customRender: 'mchName' } },
+  { key: 'mchOrderNo', title: '商户单号', dataIndex: 'mchOrderNo', width: '210px', align: 'center' },
+  { key: 'resellerOrderNo', title: '核销单号', dataIndex: 'resellerOrderNo', width: '225px', align: 'center' },
   { key: 'resellerName', title: '核销商名称', dataIndex: 'resellerName', ellipsis: true, width: '120px' },
-  { key: 'resellerNo', title: '核销商ID', dataIndex: 'resellerNo', ellipsis: true, width: '100px' },
-  { key: 'payOrderId', title: '支付订单号', dataIndex: 'payOrderId', width: '220px' },
-  { key: 'mchOrderNo', title: '商户订单号', dataIndex: 'mchOrderNo', width: '225px' },
-  { key: 'resellerOrderNo', title: '核销订单号', dataIndex: 'resellerOrderNo', width: '225px' },
-  { key: 'channelOrderNo', title: '官方单号', dataIndex: 'channelOrderNo', width: '180px' },
-  { key: 'amount', title: '支付金额', dataIndex: 'amount', width: 100 },
-  { key: 'wayName', title: '支付方式', dataIndex: 'wayName', width: 125 },
+  { key: 'productType', title: '产品类型', width: '120px', scopedSlots: { customRender: 'productType' }, align: 'center' },
+  { key: 'wayName', title: '支付方式', width: '120px', dataIndex: 'wayName', align: 'center' },
+  // { key: 'wayName', title: '充值账号', width: '120px', dataIndex: 'wayName', align: 'center' },
+  {
+    key: 'amount',
+    title: '订单金额',
+    dataIndex: 'amount',
+    ellipsis: true,
+    width: '100px',
+    customRender: (text) => {
+      if (text) {
+        return text / 100
+      }
+    }
+  },
+  // { key: 'amount', title: '运营商', dataIndex: 'amount', ellipsis: true, width: '100px' },
+  // { key: 'amount', title: '地区', dataIndex: 'amount', ellipsis: true, width: '100px' },
   { key: 'state', title: '支付状态', scopedSlots: { customRender: 'stateSlot' }, width: 100 },
-  { key: 'notifyState', title: '回调状态', scopedSlots: { customRender: 'notifySlot' }, width: 100 },
-  { key: 'clientIp', title: '下单IP', dataIndex: 'clientIp', width: '125px' },
-  { key: 'createdAt', title: '创建时间', dataIndex: 'createdAt', width: 180 },
-  { key: 'x', dataIndex: 'x', title: '支付成功时间', width: 180 },
-  { key: 'op', title: '操作', width: '160px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }
+  {
+    key: 'resellerOrderStatus',
+    title: '核销状态',
+    scopedSlots: { customRender: 'resellerOrderStatus' },
+    width: 100,
+    customRender: (text, record) => {
+      switch (text.resellerOrderStatus) {
+        case 'PENDING':
+          return '待处理'
+        case 'WAITING_MATCH':
+          return '待匹配'
+        case 'MATCHING':
+          return '匹配中'
+        case 'PAYING':
+          return '待支付'
+        case 'RECHARGING':
+          return '充值中'
+        case 'FINISH':
+          return '已到账'
+        case 'SLEEP':
+          return '休眠'
+        case 'NULLIFY':
+          return '已经作废'
+      }
+    }
+  },
+  { key: 'channelOrderNo', title: '官方单号', dataIndex: 'channelOrderNo', width: '180px' },
+  { key: 'notifyState', title: '支付回调', scopedSlots: { customRender: 'notifyState' }, width: 100 },
+  { key: 'resellerNotifyStatus', title: '核销回调', scopedSlots: { customRender: 'resellerNotifyStatus' }, width: 100 },
+  { key: 'createdAt', title: '下单时间', dataIndex: 'createdAt', width: 180 },
+  { key: 'gmtMatch', title: '匹配时间', dataIndex: 'gmtMatch', width: 180 },
+  { key: 'op', title: '操作', width: '280px', fixed: 'right', align: 'center', scopedSlots: { customRender: 'opSlot' } }
 ]
 
 export default {
@@ -444,6 +525,7 @@ export default {
       btnLoading: false,
       tableColumns: tableColumns,
       searchData: {},
+      daterange: [],
       createdStart: '', // 选择开始时间
       createdEnd: '', // 选择结束时间
       visible: false,
@@ -451,17 +533,29 @@ export default {
       payWayList: [],
       groupKey: 'applicationConfig',
       orderDetail: {},
-      configData: {}
+      configData: {},
+      reSellerList: []
     }
   },
-  computed: {
-  },
+  computed: {},
   mounted () {
     if (this.$access('ENT_PAY_ORDER_SEARCH_PAY_WAY')) {
       this.initPayWay()
     }
+    this.getReSeller()
   },
   methods: {
+    // 获取核销商列表
+    getReSeller () {
+      accountList({ pageNumber: 1, pageSize: 9999 }).then(res => {
+        this.reSellerList = res.records.map(item => {
+          return {
+            resellerName: item.resellerName,
+            resellerNo: item.resellerNo
+          }
+        })
+      })
+    },
     queryFunc () {
       if (this.searchData.amountSearch && this.searchData.amountSearch !== '') {
         this.searchData.amount = ''
@@ -472,7 +566,7 @@ export default {
     },
     // 请求table接口数据
     reqTableDataFunc: (params) => {
-      return req.list(API_URL_PAY_ORDER_LIST, params)
+      return getPayOrderList(params)
     },
     searchFunc: function () { // 点击【查询】按钮点击事件
       if (this.searchData.amountSearch && this.searchData.amountSearch !== '') {
@@ -491,13 +585,20 @@ export default {
     },
     detailFunc: function (recordId) {
       const that = this
-      req.getById(API_URL_PAY_ORDER_LIST, recordId).then(res => {
+      getOrderDetail(recordId).then(res => {
         that.detailData = res
       })
       this.visible = true
     },
     searchOrder (channelOrderNo) {
+      if (!channelOrderNo) {
+        this.$message.error('官方单号不存在')
+        return false
+      }
       const that = this
+      getChannelDetail(channelOrderNo).then(res => {
+        console.log(res)
+      })
       getConfigs(that.groupKey).then(res => {
         let configUrl = ''
         res.forEach(item => {
@@ -507,13 +608,13 @@ export default {
         })
         if (configUrl !== '') {
           axios.get(configUrl + '/api/pay/query/' + channelOrderNo)
-          .then(function (response) {
-            that.$refs.orderDetail.show(response.data)
-          })
-          .catch(function (error) {
-            console.log(error)
-            that.$refs.orderDetail.onClose()
-          })
+            .then(function (response) {
+              that.$refs.orderDetail.show(response.data)
+            })
+            .catch(function (error) {
+              console.log(error)
+              that.$refs.orderDetail.onClose()
+            })
         }
       })
     },
@@ -522,9 +623,9 @@ export default {
         return this.$infoBox.modalWarning('订单无法补单', '')
       }
       conectOrder(payOrderId).then(res => {
-          this.$infoBox.modalSuccess('补单成功', '')
+        this.$infoBox.modalSuccess('补单成功', '')
       }).catch(res => {
-          this.$infoBox.modalError(res.msg, '')
+        this.$infoBox.modalError(res.msg, '')
       })
     },
     moment,
@@ -542,6 +643,22 @@ export default {
       const that = this
       req.list(API_URL_PAYWAYS_LIST, { 'pageSize': -1 }).then(res => { // 支付方式下拉列表
         that.payWayList = res.records
+      })
+    },
+    // 一键回调
+    batchCallback () {
+      batchResend().then(res => {
+        if (res.code === 0) {
+          this.$message.success('操作成功')
+        }
+      })
+    },
+    // 重置
+    resetFormData () {
+      this.searchData = {}
+      this.daterange = []
+      this.$nextTick(() => {
+        this.searchFunc()
       })
     }
   }

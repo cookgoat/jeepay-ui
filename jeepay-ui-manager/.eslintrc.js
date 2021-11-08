@@ -20,16 +20,6 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'generator-star-spacing': 'off',
     'no-mixed-operators': 0,
-    'vue/max-attributes-per-line': [
-      2,
-      {
-        'singleline': 5,  //单行的情况下可以接受的属性数量
-        'multiline': {
-          'max': 1,  //多行的情况下每行最多属性数量
-          'allowFirstLine': false  //不允许在多行的情况下第一行有属性
-        }
-      }
-    ],
     'vue/attribute-hyphenation': 0,
     'vue/html-self-closing': 0,
     'vue/component-name-in-template-casing': 0,
@@ -67,7 +57,7 @@ module.exports = {
      "beforeStatementContinuationChars": "never" 如果该语句不会因为ASI而带来风险，那么即使它的下一行语句以 [，(，/，+，或 - 开头，也不允许在语句末尾添加分号。
      * **/
     'semi': [
-      2,
+      0,
       'never',
       {
         'beforeStatementContinuationChars': 'never'
@@ -81,7 +71,18 @@ module.exports = {
       }
     ],
     'template-curly-spacing': 'off',
-    'indent': 'off'
+    'indent': 'off',
+    'comma-dangle': 0,
+    'no-unused-vars': 0,
+    'space-before-function-paren': 0,
+    'camelcase': 0,
+    'no-trailing-spaces': 0,
+    'vue/require-default-prop': 0,
+    'vue/html-indent': 0,
+    'vue/mustache-interpolation-spacing': 0,
+    'vue/no-multi-spaces': 0,
+    'vue/require-prop-types': 0,
+    'vue/max-attributes-per-line': 0
   },
   parserOptions: {
     parser: 'babel-eslint'

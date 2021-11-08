@@ -13,9 +13,9 @@
       <a-row justify="space-between" type="flex">
         <a-col :span="10">
           <a-form-model-item label="业务类型" prop="bizType">
-            <a-radio-group v-model="saveObject.bizType">
-              <a-radio :value="'PROPERTY_CREDIT'">
-                资和信
+            <a-radio-group v-model="saveObject.bizType" style="width: 150px;">
+              <a-radio v-for="(item, index) in serviceTypeList" :key="index" :value="item.value">
+                {{ item.name }}
               </a-radio>
             </a-radio-group>
           </a-form-model-item>
@@ -100,7 +100,6 @@ export default {
     },
     onClose () {
       this.visible = false
-      this.resetPassEmpty(this)
     },
     searchFunc: function () { // 点击【查询】按钮点击事件
       this.$refs.infoTable.refTable(true)

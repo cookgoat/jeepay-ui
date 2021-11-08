@@ -40,6 +40,8 @@
         </a-form>
         <div>
           <a-button icon="plus" v-if="$access('ENT_RESELLER_ORDER_GROUP_IMPORT')" type="primary" @click="importOrder" class="mg-b-30">导入核销订单</a-button>
+          <a-button type="primary" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW')" @click="triggerListFunc('PENDING')" style="margin-left: 20px;">启用</a-button>
+          <a-button type="primary" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW')" @click="triggerListFunc('NULLIFY')" style="margin-left: 20px;">禁用</a-button>
         </div>
       </div>
 
@@ -51,6 +53,7 @@
         :reqTableDataFunc="reqTableDataFunc"
         :tableColumns="tableColumns"
         :searchData="searchData"
+        :rowSelection="rowSelection"
         :scrollX="1100"
         rowKey="id"
       >
@@ -69,9 +72,14 @@
           <b v-if="record.chargeAccountType ==='PLATFORM_ACCOUNT'">平台账号</b>
         </template> <!-- 自定义插槽 -->
         <template slot="orderStatus" slot-scope="{record}">
-          <b v-if="record.orderStatus ==='WAITING_PAY'">等待支付</b>
-          <b v-if="record.orderStatus ==='PAYING'">支付中</b>
-          <b v-if="record.orderStatus ==='FINISH'">订单完成</b>
+          <b v-if="record.orderStatus ==='PENDING'">待处理</b>
+          <b v-else-if="record.orderStatus ==='WAITING_MATCH'">待匹配</b>
+          <b v-else-if="record.orderStatus ==='MATCHING'">匹配中</b>
+          <b v-else-if="record.orderStatus ==='PAYING'">待支付</b>
+          <b v-else-if="record.orderStatus ==='RECHARGING'">充值中</b>
+          <b v-else-if="record.orderStatus ==='FINISH'">已到账</b>
+          <b v-else-if="record.orderStatus ==='SLEEP'">休眠</b>
+          <b v-else-if="record.orderStatus ==='NULLIFY'">作废</b>
         </template> <!-- 自定义插槽 -->
         <template slot="matchOutTradeNo" slot-scope="{record}"><b>{{ record.matchOutTradeNo }}</b></template> <!-- 自定义插槽 -->
         <template slot="gmtPayingStart" slot-scope="{record}"><b>{{ record.gmtPayingStart }}</b></template> <!-- 自定义插槽 -->
@@ -79,6 +87,8 @@
         <template slot="opSlot" slot-scope="{record}">  <!-- 操作列插槽 -->
           <JeepayTableColumns>
             <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW')" @click="detailFunc(record.id)">详情</a-button>
+            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW') && record.orderStatus === 'NULLIFY'" @click="triggerFunc(record.id,'PENDING')" >启用</a-button>
+            <a-button type="link" v-if="$access('ENT_RESELLER_ORDER_GROUP_VIEW') && record.orderStatus === 'PENDING'" @click="triggerFunc(record.id,'NULLIFY')">禁用</a-button>
           </JeepayTableColumns>
         </template>
       </JeepayTable>
@@ -92,7 +102,7 @@
     import JeepayTextUp from '@/components/JeepayTextUp/JeepayTextUp' // 文字上移组件
     import JeepayTableColumns from '@/components/JeepayTable/JeepayTableColumns'
     // eslint-disable-next-line camelcase
-    import { API_URL_RESELLER_ORDER_LIST, req } from '@/api/manage'
+    import { API_URL_RESELLER_ORDER_LIST, req, resellerOrdersTrigger } from '@/api/manage'
     import moment from 'moment'
     import Detail from '@/views/reseller/order/Detail'
     import Upload from '@/views/reseller/order/Upload'
@@ -121,10 +131,24 @@
             return {
                 btnLoading: false,
                 tableColumns: tableColumns,
+                selectedData: [],
                 searchData: {}
             }
         },
         mounted () {
+        },
+        computed: {
+          rowSelection () {
+            const that = this
+            return {
+              onChange: (selectedRowKeys, selectedRows) => {
+                that.selectedData = [] // 清空选中数组
+                selectedRows.forEach(function (data) { // 赋值选中参数
+                  that.selectedData.push(data)
+                })
+              }
+            }
+          }
         },
         methods: {
             importOrder () {
@@ -148,6 +172,53 @@
             // 请求table接口数据
             reqTableDataFunc: (params) => {
                 return req.list(API_URL_RESELLER_ORDER_LIST, params)
+            },
+            triggerFunc (id, status) {
+              const selectedIds = []
+              selectedIds.push(id)
+              var that = this
+              const param = {
+                resellerOrderStatus: status,
+                resellerOrderIds: selectedIds
+              }
+              resellerOrdersTrigger(param).then(res => {
+                that.selectedIds = []
+                that.$refs.infoTable.refTable(true)
+                this.$message.success('操作成功')
+              })
+            },
+            triggerListFunc (status) {
+              if (this.selectedData.length === 0) {
+                this.$message.error('请先选择订单')
+                return
+              }
+              var ids = []
+              if (status === 'PENDING') {
+                for (const value of this.selectedData) {
+                  if (value.orderStatus === 'NULLIFY') {
+                    ids.push(value.id)
+                  }
+                }
+              } else {
+                for (const value of this.selectedData) {
+                  console.log(value)
+                  if (value.orderStatus === 'PENDING') {
+                    ids.push(value.id)
+                  }
+                }
+              }
+              if (ids.length === 0) {
+                this.$message.success('没有可操作的订单')
+                return
+              }
+              var that = this
+              const param = {
+                resellerOrderStatus: status,
+                resellerOrderIds: ids }
+              resellerOrdersTrigger(param).then(res => {
+                that.$refs.infoTable.refTable(true)
+                this.$message.success('操作成功')
+              })
             },
             // delFunc: function (recordId) {
             //     const that = this

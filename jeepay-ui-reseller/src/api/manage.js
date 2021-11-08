@@ -193,6 +193,13 @@ export function xcstatByCurrentUser (params) {
   })
 }
 
+export function resellerOrdersTrigger (params) {
+  return request.request({
+    url: API_URL_RESELLER_ORDER_LIST + '/trigger',
+    method: 'POST',
+    data: params
+  })
+}
 export function statByToday () {
   return request.request({
     url: API_URL_MAIN_STATISTIC + '/statByToday',

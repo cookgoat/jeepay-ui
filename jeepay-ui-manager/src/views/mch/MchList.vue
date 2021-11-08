@@ -2,31 +2,31 @@
   <page-header-wrapper>
     <a-card>
       <div class="table-page-search-wrapper">
-        <a-form layout="inline" class="table-head-ground">
-          <div class="table-layer">
-            <jeepay-text-up :placeholder="'商户号'" :msg="searchData.mchNo" v-model="searchData.mchNo"/>
-            <jeepay-text-up :placeholder="'服务商号'" :msg="searchData.isvNo" v-model="searchData.isvNo"/>
-            <jeepay-text-up :placeholder="'商户名称'" :msg="searchData.mchName" v-model="searchData.mchName"/>
-            <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.state" placeholder="商户状态" default-value="">
-                <a-select-option value="">全部</a-select-option>
-                <a-select-option value="0">禁用</a-select-option>
-                <a-select-option value="1">启用</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item label="" class="table-head-layout">
-              <a-select v-model="searchData.type" placeholder="商户类型" default-value="">
-                <a-select-option value="">全部</a-select-option>
-                <a-select-option value="1">普通商户</a-select-option>
-                <a-select-option value="2">特约商户</a-select-option>
-              </a-select>
-            </a-form-item>
-            <span class="table-page-search-submitButtons" style="flex-grow: 0; flex-shrink: 0;">
-              <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">查询</a-button>
-              <a-button style="margin-left: 8px" icon="reload" @click="() => this.searchData = {}">重置</a-button>
-            </span>
-          </div>
-        </a-form>
+<!--        <a-form layout="inline" class="table-head-ground">-->
+<!--          <div class="table-layer">-->
+<!--            <jeepay-text-up :placeholder="'商户号'" :msg="searchData.mchNo" v-model="searchData.mchNo"/>-->
+<!--            <jeepay-text-up :placeholder="'服务商号'" :msg="searchData.isvNo" v-model="searchData.isvNo"/>-->
+<!--            <jeepay-text-up :placeholder="'商户名称'" :msg="searchData.mchName" v-model="searchData.mchName"/>-->
+<!--            <a-form-item label="" class="table-head-layout">-->
+<!--              <a-select v-model="searchData.state" placeholder="商户状态" default-value="">-->
+<!--                <a-select-option value="">全部</a-select-option>-->
+<!--                <a-select-option value="0">禁用</a-select-option>-->
+<!--                <a-select-option value="1">启用</a-select-option>-->
+<!--              </a-select>-->
+<!--            </a-form-item>-->
+<!--            <a-form-item label="" class="table-head-layout">-->
+<!--              <a-select v-model="searchData.type" placeholder="商户类型" default-value="">-->
+<!--                <a-select-option value="">全部</a-select-option>-->
+<!--                <a-select-option value="1">普通商户</a-select-option>-->
+<!--                <a-select-option value="2">特约商户</a-select-option>-->
+<!--              </a-select>-->
+<!--            </a-form-item>-->
+<!--            <span class="table-page-search-submitButtons" style="flex-grow: 0; flex-shrink: 0;">-->
+<!--              <a-button type="primary" icon="search" @click="queryFunc" :loading="btnLoading">查询</a-button>-->
+<!--              <a-button style="margin-left: 8px" icon="reload" @click="() => this.searchData = {}">重置</a-button>-->
+<!--            </span>-->
+<!--          </div>-->
+<!--        </a-form>-->
         <div>
           <a-button v-if="$access('ENT_MCH_INFO_ADD')" type="primary" icon="plus" @click="addFunc" class="mg-b-30">新建</a-button>
         </div>
