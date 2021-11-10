@@ -319,7 +319,7 @@ export default {
       })
     },
     selectChange (value) {
-      this.batchManual.isSuccess = !!value;
+      this.batchManual.isSuccess = (value !== '0');
     },
     batchExecute () {
       // 获取当前页下的所有id
