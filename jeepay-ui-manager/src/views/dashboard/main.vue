@@ -877,6 +877,7 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
+          item['pendingCount'] = item['pendingCount'] / 100
         })
         this.JDOrderData = res
       })
@@ -886,6 +887,7 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
+          item['pendingCount'] = item['pendingCount'] / 100
         })
         this.CTRIPOrderData = res
       })
@@ -895,6 +897,7 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
+          item['pendingCount'] = item['pendingCount'] / 100
         })
         this.SINOPECOrderData = res
       })

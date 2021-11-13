@@ -20,9 +20,6 @@
               <a-radio :value="'CTRIP'">
                 携程任我行
               </a-radio>
-              <a-radio :value="'SINOPEC'">
-                              石化油卡
-              </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>
