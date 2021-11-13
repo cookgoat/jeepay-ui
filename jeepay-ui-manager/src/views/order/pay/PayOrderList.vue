@@ -596,9 +596,9 @@ export default {
         return false
       }
       const that = this
-      getChannelDetail(channelOrderNo).then(res => {
-        console.log(res)
-      })
+      // getChannelDetail(channelOrderNo).then(res => {
+      //   console.log(res)
+      // })
       getConfigs(that.groupKey).then(res => {
         let configUrl = ''
         res.forEach(item => {
