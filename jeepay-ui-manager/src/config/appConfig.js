@@ -45,6 +45,6 @@ export const asyncRouteDefine = {
   'ResellerProductGroupPage': { defaultPath: '/resellerProductGroup', component: () => import('@/views/reseller/product/ProductList') }, // 核销产品管理
   'matchConfigPage': { defaultPath: '/matchconfig', component: () => import('@/views/channelSetting/ChannelSetting') }, // 通道管理页面
   'ENT_RESELLER_RETURN_GROUP': { defaultPath: '/collection-list', component: () => import('@/views/collection/collectionList') },
-  'ENT_RESELLER_AGENT_GROUP': { defaultPath: '/agentList', component: () => import('@/views/agent/agentList') },
+  'AgentGroupPage': { defaultPath: '/agentList', component: () => import('@/views/agent/agentList') },
   'ENT_RESELLER_DETAIL_GROUP': { default: '/resellerDetailGroup', component: () => import('@/views/collection/resellerDetailGroup') }
 }
