@@ -175,8 +175,8 @@ const JDOrderColumn = [
       },
       {
         title: '实际可用',
-        dataIndex: 'finishCount',
-        key: 'finishCount',
+        dataIndex: 'pendingCount',
+        key: 'pendingCount',
         width: 120,
         align: 'center'
       }
@@ -225,8 +225,8 @@ const CTRIPOrderColumn = [
       },
       {
         title: '实际可用',
-        dataIndex: 'finishCount',
-        key: 'finishCount',
+        dataIndex: 'pendingCount',
+        key: 'pendingCount',
         width: 120,
         align: 'center'
       }
@@ -275,8 +275,8 @@ const SINOPECOrderColumn = [
       },
       {
         title: '实际可用',
-        dataIndex: 'finishCount',
-        key: 'finishCount',
+        dataIndex: 'pendingCount',
+        key: 'pendingCount',
         width: 120,
         align: 'center'
       }
@@ -904,6 +904,7 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
+          item['pendingCount'] = item['pendingCount'] / 100
         })
         this.PETROOrderData = res
       })

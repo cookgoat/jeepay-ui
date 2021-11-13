@@ -16,19 +16,19 @@
             </a-form-item>
             <a-form-item label="" class="table-head-layout">
               <a-select v-model="searchData.state" placeholder="支付状态" default-value="">
-                <a-select-option value="0">匹配中</a-select-option>
-                <a-select-option value="1">匹配成功</a-select-option>
+                <a-select-option value="0">订单生成</a-select-option>
+                <a-select-option value="1">支付中</a-select-option>
                 <a-select-option value="2">支付成功</a-select-option>
-                <a-select-option value="3">超时失败</a-select-option>
+                <a-select-option value="3">支付失败</a-select-option>
                 <a-select-option value="4">已撤销</a-select-option>
-                <a-select-option value="5">失败退款</a-select-option>
+                <a-select-option value="5">已退款</a-select-option>
                 <a-select-option value="6">订单关闭</a-select-option>
               </a-select>
             </a-form-item>
             <a-form-item class="table-head-layout">
               <a-select v-model="searchData.notifyState" placeholder="支付回调">
                 <a-select-option value="1">已发送</a-select-option>
-                <a-select-option value="2">未发送</a-select-option>
+                <a-select-option value="0">未发送</a-select-option>
               </a-select>
             </a-form-item>
             <a-form-item class="table-head-layout">
@@ -41,8 +41,8 @@
             <jeepay-text-up :placeholder="'核销单号'" :msg="searchData.resellerOrderNo  "
                             v-model="searchData.resellerOrderNo  "/>
             <a-form-item class="table-head-layout">
-              <a-select v-model="searchData.resellerName" placeholder="请选择核销商">
-                <a-select-option v-for="item in reSellerList" :key="item.resellerNo" :value="item.resellerName">
+              <a-select v-model="searchData.resellerNo" placeholder="请选择核销商">
+                <a-select-option v-for="item in reSellerList" :key="item.resellerNo" :value="item.resellerNo">
                   {{ item.resellerName }}
                 </a-select-option>
               </a-select>
@@ -109,7 +109,7 @@
               record.state === 3 ? '支付失败' :
               record.state === 4 ? '已撤销' :
               record.state === 5 ? '已退款' :
-              record.state === 6 ? '订单关闭' : '匹配中'
+              record.state === 6 ? '订单关闭' : ''
             }}
           </a-tag>
         </template>

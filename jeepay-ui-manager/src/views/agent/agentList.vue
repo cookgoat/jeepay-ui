@@ -198,135 +198,135 @@ export default {
         creditAmount: undefined,
         jdECardDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'JD_E_CARD',
             discount: 0
           }
         ],
         ctripDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'CTRIP',
             discount: 0
           },
         ],
         sinopecDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'SINOPEC',
             discount: 0
           },
         ],
         petroDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'petroDiscount',
             discount: 0
           },
         ],
         testDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'TEST',
             discount: 0
           },
@@ -382,135 +382,135 @@ export default {
         creditAmount: undefined,
         jdECardDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'JD_E_CARD',
             discount: 0
           }
         ],
         ctripDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'CTRIP',
             discount: 0
           },
         ],
         sinopecDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'SINOPEC',
             discount: 0
           },
         ],
         petroDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'petroDiscount',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'petroDiscount',
             discount: 0
           },
         ],
         testDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'TEST',
             discount: 0
           },

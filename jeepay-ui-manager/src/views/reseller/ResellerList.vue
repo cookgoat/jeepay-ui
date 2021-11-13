@@ -34,8 +34,8 @@
           <div class="table-layer">
             <jeepay-text-up :placeholder="'核销单号'" :msg="searchData.orderNo" v-model="searchData.orderNo" />
             <a-form-item class="table-head-layout">
-              <a-select v-model="searchData.resellerName" placeholder="请选择核销商">
-                <a-select-option v-for="item in reSellerList" :key="item.resellerNo" :value="item.resellerName">
+              <a-select v-model="searchData.resellerNo" placeholder="请选择核销商">
+                <a-select-option v-for="item in reSellerList" :key="item.resellerNo" :value="item.resellerNo">
                   {{ item.resellerName }}
                 </a-select-option>
               </a-select>
@@ -124,10 +124,23 @@
           {{ orderDetail.resellerName }}
         </a-descriptions-item>
         <a-descriptions-item label="核销回调">
-          {{ orderDetail.notifyStatus }}
+          <template v-if="orderDetail.notifyStatus === 'WAIT_NOTIFY'">
+            <span>待回调</span>
+          </template>
+          <template v-if="orderDetail.notifyStatus === 'NOTIFY_SUCCESS'">
+            <span style="color: forestgreen;">已发送</span>
+          </template>
+          <template v-if="orderDetail.notifyStatus === 'NOTIFY_FAILED'">
+            <span style="color: red;">未发送</span>
+          </template>
         </a-descriptions-item>
         <a-descriptions-item label="产品类型">
-          {{ orderDetail.productType }}
+          <a-select v-model="orderDetail.productType"  disabled placeholder="产品类型" default-value="">
+            <a-select-option v-for="(item, index) in productTypeList" :key="index" :value="item.value">{{
+                item.name
+              }}
+            </a-select-option>
+          </a-select>
         </a-descriptions-item>
         <a-descriptions-item label="创建时间">
           {{ orderDetail.gmtCreate }}
@@ -148,7 +161,17 @@
           {{ orderDetail.gmtFinish }}
         </a-descriptions-item>
         <a-descriptions-item label="核销状态">
-          {{ orderDetail.orderStatus }}
+          <span v-if="orderDetail.orderStatus === 'PENDING'">待处理</span>
+          <span v-if="orderDetail.orderStatus === 'WAITING_PAY'">待匹配</span>
+          <span v-if="orderDetail.orderStatus === 'MATCHING'">匹配中</span>
+          <span v-if="orderDetail.orderStatus === 'PAYING'" style="color: orange;">匹配成功</span>
+          <span v-if="orderDetail.orderStatus === 'RECHARGING'" style="color: green;">充值中</span>
+          <span v-if="orderDetail.orderStatus === 'FINISH'" style="color: green;">充值完成</span>
+          <span v-if="orderDetail.orderStatus === 'HANDLE_FINISH'" style="color: green;">手动成功</span>
+          <span v-if="orderDetail.orderStatus === 'SLEEP'" style="color: pink;">休眠</span>
+          <span v-if="orderDetail.orderStatus === 'NULLIFY'" style="color: red;">已禁用</span>
+          <span v-if="orderDetail.orderStatus === 'RECHARGE_FAILED'" style="color: blue;">失败退款</span>
+          <span v-if="orderDetail.orderStatus === 'HANDLE_FAILED'" style="color: blue;">手动失败</span>
         </a-descriptions-item>
         <a-descriptions-item label="商户单号">
           {{ orderDetail.resellerOrderNo }}

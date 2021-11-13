@@ -16,7 +16,7 @@
               </a-range-picker>
             </a-form-item>
             <a-form-item label="核销商">
-              <a-select @change="selectJdOnChange" style="width: 150px;" placeholder="请选择核销商">
+              <a-select v-model="formJDResellerNo" @change="selectJdOnChange" style="width: 150px;" placeholder="请选择核销商">
                 <a-select-option v-for="(i, index) in reSellerList" :key="index" :value="i.resellerNo">{{
                     i.resellerName
                   }}
@@ -162,7 +162,7 @@
               </a-range-picker>
             </a-form-item>
             <a-form-item>
-              <a-select style="width: 150px;" @change="selectXcOnChange" placeholder="请选择核销商">
+              <a-select  v-model="formXcResellNo" style="width: 150px;" @change="selectXcOnChange" placeholder="请选择核销商">
                 <a-select-option v-for="(item, index) in reSellerList" :key="index" :value="item.resellerNo">
                   {{ item.resellerName }}
                 </a-select-option>
@@ -177,34 +177,34 @@
         <a-skeleton active :loading="true" v-if="skeletonIsShow" style="padding:20px" :paragraph="{ rows: 6 }"/>
         <a-descriptions title="携程任我行">
           <a-descriptions-item label="总订单金额">
-            {{ '￥' + jd_currentStat.allOrderAmount / 100 }}
+            {{ '￥' + xc_currentStat.allOrderAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="支付中订单金额">
-            {{ '￥' + jd_currentStat.allPayingAmount / 100 }}
+            {{ '￥' + xc_currentStat.allPayingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="完成订单金额">
-            {{ '￥' + jd_currentStat.allFinishAmount / 100 }}
+            {{ '￥' + xc_currentStat.allFinishAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="充值中订单金额">
-            {{ '￥' + jd_currentStat.allRechargingAmount / 100 }}
+            {{ '￥' + xc_currentStat.allRechargingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="回款金额">
-            {{ '￥' + jd_currentStat.allReturnedAmount / 100 }}
+            {{ '￥' + xc_currentStat.allReturnedAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="待处理订单金额">
-            {{ '￥' + jd_currentStat.allPendingAmount / 100 }}
+            {{ '￥' + xc_currentStat.allPendingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="待匹配订单金额">
-            {{ '￥' + jd_currentStat.allWaitingMatchAmount / 100 }}
+            {{ '￥' + xc_currentStat.allWaitingMatchAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="过期订单金额">
-            {{ '￥' + jd_currentStat.allNullifyAmount / 100 }}
+            {{ '￥' + xc_currentStat.allNullifyAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="匹配中订单金额">
-            {{ '￥' + jd_currentStat.allMatchingAmount / 100 }}
+            {{ '￥' + xc_currentStat.allMatchingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="休眠订单金额">
-            {{ '￥' + jd_currentStat.allSleepAmount / 100 }}
+            {{ '￥' + xc_currentStat.allSleepAmount / 100 }}
           </a-descriptions-item>
         </a-descriptions>
         <JeepayTable
@@ -308,7 +308,7 @@
               </a-range-picker>
             </a-form-item>
             <a-form-item>
-              <a-select style="width: 150px;" @change="selectSINOPECOnChange" placeholder="请选择核销商">
+              <a-select v-model="formSINOPECResellerNo" style="width: 150px;" @change="selectSINOPECOnChange" placeholder="请选择核销商">
                 <a-select-option v-for="(item, index) in reSellerList" :key="index" :value="item.resellerNo">
                   {{ item.resellerName }}
                 </a-select-option>
@@ -323,34 +323,34 @@
         <a-skeleton active :loading="true" v-if="skeletonIsShow" style="padding:20px" :paragraph="{ rows: 6 }"/>
         <a-descriptions title="中石化">
           <a-descriptions-item label="总订单金额">
-            {{ '￥' + jd_currentStat.allOrderAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allOrderAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="支付中订单金额">
-            {{ '￥' + jd_currentStat.allPayingAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allPayingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="完成订单金额">
-            {{ '￥' + jd_currentStat.allFinishAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allFinishAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="充值中订单金额">
-            {{ '￥' + jd_currentStat.allRechargingAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allRechargingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="回款金额">
-            {{ '￥' + jd_currentStat.allReturnedAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allReturnedAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="待处理订单金额">
-            {{ '￥' + jd_currentStat.allPendingAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allPendingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="待匹配订单金额">
-            {{ '￥' + jd_currentStat.allWaitingMatchAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allWaitingMatchAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="过期订单金额">
-            {{ '￥' + jd_currentStat.allNullifyAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allNullifyAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="匹配中订单金额">
-            {{ '￥' + jd_currentStat.allMatchingAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allMatchingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="休眠订单金额">
-            {{ '￥' + jd_currentStat.allSleepAmount / 100 }}
+            {{ '￥' + SINOPECCurrentStat.allSleepAmount / 100 }}
           </a-descriptions-item>
         </a-descriptions>
         <JeepayTable
@@ -453,7 +453,7 @@
               </a-range-picker>
             </a-form-item>
             <a-form-item>
-              <a-select style="width: 150px;" @change="selectPETROOnChange" placeholder="请选择核销商">
+              <a-select  v-model="formPETROResellerNo" style="width: 150px;" @change="selectPETROOnChange" placeholder="请选择核销商">
                 <a-select-option v-for="(item, index) in reSellerList" :key="index" :value="item.resellerNo">
                   {{ item.resellerName }}
                 </a-select-option>
@@ -468,34 +468,34 @@
         <a-skeleton active :loading="true" v-if="skeletonIsShow" style="padding:20px" :paragraph="{ rows: 6 }"/>
         <a-descriptions title="中石油">
           <a-descriptions-item label="总订单金额">
-            {{ '￥' + jd_currentStat.allOrderAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allOrderAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="支付中订单金额">
-            {{ '￥' + jd_currentStat.allPayingAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allPayingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="完成订单金额">
-            {{ '￥' + jd_currentStat.allFinishAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allFinishAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="充值中订单金额">
-            {{ '￥' + jd_currentStat.allRechargingAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allRechargingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="回款金额">
-            {{ '￥' + jd_currentStat.allReturnedAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allReturnedAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="待处理订单金额">
-            {{ '￥' + jd_currentStat.allPendingAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allPendingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="待匹配订单金额">
-            {{ '￥' + jd_currentStat.allWaitingMatchAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allWaitingMatchAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="过期订单金额">
-            {{ '￥' + jd_currentStat.allNullifyAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allNullifyAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="匹配中订单金额">
-            {{ '￥' + jd_currentStat.allMatchingAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allMatchingAmount / 100 }}
           </a-descriptions-item>
           <a-descriptions-item label="休眠订单金额">
-            {{ '￥' + jd_currentStat.allSleepAmount / 100 }}
+            {{ '￥' + PETROCurrentStat.allSleepAmount / 100 }}
           </a-descriptions-item>
         </a-descriptions>
         <JeepayTable
@@ -625,6 +625,7 @@ const tableColumns = [
   { key: 'nullifyAllAmount', width: '150px', title: '过期订单金额 ', scopedSlots: { customRender: 'nullifyAllAmount' } }
 ]
 const tableColumnsChild = [
+  { key: 'resellerNo', width: '200px', title: '核销商户号', scopedSlots: { customRender: 'resellerNo' } },
   { key: 'queryFlag', width: '200px', title: '子核销商名称', scopedSlots: { customRender: 'queryFlag' } },
   { key: 'allOrderAmount', width: '200px', title: '总订单金额', scopedSlots: { customRender: 'allOrderAmount' } },
   { key: 'allPendingAmount', width: '200px', title: '总待处理金额', scopedSlots: { customRender: 'allPendingAmount' } },
@@ -638,7 +639,6 @@ const tableColumnsChild = [
     title: '充值中订单金额',
     scopedSlots: { customRender: 'allRechargingAmount' }
   },
-  { key: 'resellerNo', width: '200px', title: '核销商户号', scopedSlots: { customRender: 'resellerNo' } },
   {
     key: 'allWaitingMatchAmount',
     width: '200px',
@@ -785,18 +785,22 @@ export default {
       if (type === 'jd') {
         this.jdSearchData = {}
         this.jdDate = []
+        this.formJDResellerNo = ''
         this.queryJdFunc()
       } else if (type === 'ctrip') {
         this.ctripSearchData = {}
         this.ctripDate = []
+        this.formXcResellNo = ''
         this.queryCtripFunc()
       } else if (type === 'SINOPEC') {
         this.SINOPECSearchData = {}
         this.SINOPECDate = []
+        this.formSINOPECResellerNo = ''
         this.querySINOPECFunc()
       } else {
         this.PETROSearchData = {}
         this.PETRODate = []
+        this.formPETROResellerNo = ''
         this.queryPETROFunc()
       }
     },

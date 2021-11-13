@@ -26,7 +26,7 @@
             <div v-if="record.productTypes && record.productTypes.includes('JD_E_CARD')">
               <p v-for="(item, index) in record.jdECardDiscount" :key="index" style="margin-bottom: 0;">
                 <span v-if="item.amount">
-                  {{ item.amount }}/{{ item.discount }}
+                  {{ item.amount/100 }}/{{ item.discount }}
                 </span>
               </p>
             </div>
@@ -35,7 +35,7 @@
             <div v-if="record.productTypes && record.productTypes.includes('CTRIP')">
               <p v-for="(item, index) in record.ctripDiscount" :key="index" style="margin-bottom: 0;">
                 <span v-if="item.amount">
-                  {{ item.amount }}/{{ item.discount }}
+                  {{ item.amount/100 }}/{{ item.discount }}
                 </span>
               </p>
             </div>
@@ -44,7 +44,7 @@
             <div v-if="record.productTypes && record.productTypes.includes('SINOPEC')">
               <p v-for="(item, index) in record.sinopecDiscount" :key="index" style="margin-bottom: 0;">
                 <span v-if="item.amount">
-                  {{ item.amount }}/{{ item.discount }}
+                  {{ item.amount/100 }}/{{ item.discount }}
                 </span>
               </p>
             </div>
@@ -53,7 +53,7 @@
             <div v-if="record.productTypes && record.productTypes.includes('PETRO')">
               <p v-for="(item, index) in record.petroDiscount" :key="index" style="margin-bottom: 0;">
                 <span v-if="item.amount">
-                  {{ item.amount }}/{{ item.discount }}
+                  {{ item.amount/100 }}/{{ item.discount }}
                 </span>
               </p>
             </div>
@@ -168,7 +168,7 @@
         </a-form-item>
         <a-form-item label="费率" v-if="useSetProductTypes && useSetProductTypes.length">
           <div class="rate-input" v-for="(item, index) in editRateForm[useSetProductTypes[currentSelectProductIndex]['rate']]" :key="index">
-            <a-input :addonBefore="item.amount" v-model="item.discount"></a-input>
+            <a-input :addonBefore="item.amount/100" v-model="item.discount"></a-input>
           </div>
         </a-form-item>
       </a-form>
@@ -268,108 +268,108 @@ export default {
         creditAmount: undefined,
         jdECardDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'JD_E_CARD',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'JD_E_CARD',
             discount: 0
           }
         ],
         ctripDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 100,
+            amount: 10000,
             productType: 'CTRIP',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'CTRIP',
             discount: 0
           }
         ],
         sinopecDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'SINOPEC',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'SINOPEC',
             discount: 0
           },
         ],
         petroDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'PETRO',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'PETRO',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'PETRO',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'PETRO',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'PETRO',
             discount: 0
           },
@@ -377,27 +377,27 @@ export default {
         ],
         testDiscount: [
           {
-            amount: 100,
+            amount: 10000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 200,
+            amount: 20000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 500,
+            amount: 50000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 1000,
+            amount: 100000,
             productType: 'TEST',
             discount: 0
           },
           {
-            amount: 2000,
+            amount: 200000,
             productType: 'TEST',
             discount: 0
           },
@@ -551,40 +551,40 @@ export default {
         proxyResellerName: undefined,
         proxyReseller: undefined,
         creditAmount: undefined,
-        jdECardDiscount: [
-        {
-          amount: '',
-          productType: 'JD_E_CARD',
-          discount: ''
-        }
-      ],
-        sinopecDiscount: [
-        {
-          amount: '',
-          productType: 'SINOPEC',
-          discount: ''
-        }
-      ],
-        petroDiscount: [
-        {
-          amount: '',
-          productType: 'PETRO',
-          discount: ''
-        }
-      ],
-        ctripDiscount: [
-        {
-          amount: '',
-          productType: 'CTRIP',
-          discount: ''
-        }
-      ]
+      //   jdECardDiscount: [
+      //   {
+      //     amount: '',
+      //     productType: 'JD_E_CARD',
+      //     discount: ''
+      //   }
+      // ],
+      //   sinopecDiscount: [
+      //   {
+      //     amount: '',
+      //     productType: 'SINOPEC',
+      //     discount: ''
+      //   }
+      // ],
+      //   petroDiscount: [
+      //   {
+      //     amount: '',
+      //     productType: 'PETRO',
+      //     discount: ''
+      //   }
+      // ],
+      //   ctripDiscount: [
+      //   {
+      //     amount: '',
+      //     productType: 'CTRIP',
+      //     discount: ''
+      //   }
+      // ]
       }
     },
-
     saveAccount () {
       this.$refs.addForm.validate((validate) => {
         if (validate) {
+          this.addForm.addFormRules = this.addForm.addFormRules * 100
           if (this.isEdit) {
             API_Account.updateAccount(this.addForm.id, this.addForm).then(res => {
               if (res.code === 0) {
