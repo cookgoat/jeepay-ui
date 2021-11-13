@@ -133,7 +133,7 @@
 
 <script>
 import { getOrderOverallResellerCount, trumpetCount, superveneCount } from '../../api/home'
-this.currentDate=new Date();
+var currentDate=new Date();
 const JDOrderColumn = [
   {
     title: '京东E卡',
