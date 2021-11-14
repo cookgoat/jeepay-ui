@@ -133,7 +133,7 @@
 
 <script>
 import { getOrderOverallResellerCount, trumpetCount, superveneCount } from '../../api/home'
-var currentDate=new Date();
+
 const JDOrderColumn = [
   {
     title: '京东E卡',
@@ -184,6 +184,7 @@ const JDOrderColumn = [
     ],
   }
 ];
+
 const CTRIPOrderColumn = [
   {
     title: '携程卡',
@@ -791,6 +792,7 @@ const SINOPECTrumpetColumn = [
     ]
   }
 ];
+
 const PETROTrumpetColumn = [
   {
     title: '小号',
@@ -814,6 +816,14 @@ const PETROTrumpetColumn = [
     ]
   }
 ];
+
+function date2() {
+  return parseInt(new Date(new Date().setHours(23, 59, 59, 59)).getTime());
+};
+
+function date1() {
+  return parseInt(new Date(new Date().setHours(0, 0, 0, 0)).getTime());
+};
 export default {
   name: 'HomeMain',
   data () {
@@ -944,6 +954,7 @@ export default {
     getJDSuperveneCount () {
       this.JDSuperveneData = []
       let JD_Supervene_Data = []
+
       // 一分钟请求
       superveneCount({ productType: 'JD_E_CARD', startTime: this.dateFormat(this.currentDate - 60), endTime: this.dateFormat(this.currentDate) }).then(res => {
         JD_Supervene_Data = res
@@ -960,7 +971,7 @@ export default {
             })
           })
         }).then(() => {
-          superveneCount({ productType: 'JD_E_CARD', startTime: this.dateFormat(this.getZeroTimeStamp()), endTime: this.dateFormat(this.getZeroTimeStamp() + 86399) }).then(res => {
+          superveneCount({ productType: 'JD_E_CARD', startTime: this.dateFormatMills(date1()), endTime: this.dateFormatMills(date2()) }.then(res => {
             JD_Supervene_Data.forEach(item => {
               res.forEach(jtem => {
                 if (item.amount === jtem.amount) {
@@ -976,7 +987,7 @@ export default {
             })
             JD_Supervene_Data.sort((a, b) => { return a.amount - b.amount })
             this.JDSuperveneData = JD_Supervene_Data
-          })
+          }))
         })
       })
     },
@@ -998,7 +1009,7 @@ export default {
             })
           })
         }).then(() => {
-          superveneCount({ productType: 'CTRIP', startTime: this.dateFormat(this.getZeroTimeStamp()), endTime: this.dateFormat(this.getZeroTimeStamp() + 86399) }).then(res => {
+          superveneCount({ productType: 'CTRIP', startTime: this.dateFormatMills(date1()), endTime: this.dateFormatMills(date2()) }).then(res => {
             ctrip_supervene_data.forEach(item => {
               res.forEach(jtem => {
                 if (item.amount === jtem.amount) {
@@ -1036,7 +1047,7 @@ export default {
             })
           })
         }).then(() => {
-          superveneCount({ productType: 'SINOPEC', startTime: this.dateFormat(this.getZeroTimeStamp()), endTime: this.dateFormat(this.getZeroTimeStamp() + 86399) }).then(res => {
+          superveneCount({ productType: 'SINOPEC', startTime: this.dateFormatMills(date1()), endTime: this.dateFormatMills(date2()) }).then(res => {
             SINOPEC_Supervene_Data.forEach(item => {
               res.forEach(jtem => {
                 if (item.amount === jtem.amount) {
@@ -1056,6 +1067,7 @@ export default {
         })
       })
     },
+
     getPETROSuperveneCount () {
       this.PETROSuperveneData = []
       let PETRO_Supervene_Data = []
@@ -1074,7 +1086,7 @@ export default {
             })
           })
         }).then(() => {
-          superveneCount({ productType: 'PETRO', startTime: this.dateFormat(this.getZeroTimeStamp()), endTime: this.dateFormat(this.getZeroTimeStamp() + 86399) }).then(res => {
+          superveneCount({ productType: 'PETRO', startTime: this.dateFormatMills(date1()), endTime: this.dateFormatMills(date2()) }).then(res => {
             PETRO_Supervene_Data.forEach(item => {
               res.forEach(jtem => {
                 if (item.amount === jtem.amount) {
@@ -1093,6 +1105,9 @@ export default {
           })
         })
       })
+    },
+    date1() {
+      return parseInt(new Date(new Date().setHours(0, 0, 0, 0)).getTime());
     }
   }
 }

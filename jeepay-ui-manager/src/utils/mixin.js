@@ -174,8 +174,9 @@ export default {
       const date = new Date(parseInt(s) * 1000)
       return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     },
-    getZeroTimeStamp () {
-      return parseInt(new Date(new Date().toLocaleDateString()).getTime() / 1000)
+    dateFormatMills (s) {
+      const date = new Date(parseInt(s))
+      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     }
   }
 }
