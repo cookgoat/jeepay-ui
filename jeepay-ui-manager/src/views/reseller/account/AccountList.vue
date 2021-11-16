@@ -208,6 +208,8 @@ const tableColumns = [
               return '测试产品'
             case 'TEST':
               return '测试产品'
+            case 'APPLE_STORE':
+              return '苹果商店'
           }
         })
         return text.join('/')
@@ -401,6 +403,33 @@ export default {
             productType: 'TEST',
             discount: 0
           },
+        ],
+        appleStoreDiscount: [
+          {
+            amount: 50,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 10000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 20000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 50000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 100000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          }
         ]
       },
       addAccountDialog: false,

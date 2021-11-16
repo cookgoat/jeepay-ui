@@ -58,6 +58,15 @@
             </p>
           </div>
         </template>
+        <template slot="appleStoreDiscount" slot-scope="{record}">
+          <div v-if="record.productTypes && record.productTypes.includes('APPLE_STORE')">
+            <p v-for="(item, index) in record.appleStoreDiscount" :key="index" style="margin-bottom: 0;">
+              <span v-if="item.amount">
+                {{ item.amount }} / {{ item.discount }}
+              </span>
+            </p>
+          </div>
+        </template>
         <template slot="status" slot-scope="{record}">
           <span v-if="record === 'ENABLE'" style="color: green;">正常</span>
           <span v-if="record === 'DISABLE'" style="color: red;">禁用</span>
@@ -150,6 +159,8 @@ const tableColumns = [
               return '测试产品'
             case 'TEST':
               return '测试产品'
+            case 'APPLE_STORE':
+              return '苹果商店'
           }
         })
         return text.join('/')
@@ -163,6 +174,7 @@ const tableColumns = [
   { key: 'petroDiscount', title: '中石油折扣', width: '120px', scopedSlots: { customRender: 'petroDiscount' } },
   { key: 'sinopecDiscount', title: '中石化折扣', width: '120px', scopedSlots: { customRender: 'sinopecDiscount' } },
   { key: 'testDiscount', title: '测试产品折扣', width: '120px', scopedSlots: { customRender: 'testDiscount' } },
+  { key: 'appleStoreDiscount', title: '苹果商店折扣', width: '120px', scopedSlots: { customRender: 'appleStoreDiscount' } },
   {
     key: 'status',
     title: '状态',
@@ -330,6 +342,33 @@ export default {
             productType: 'TEST',
             discount: 0
           },
+        ],
+        appleStoreDiscount: [
+          {
+            amount: 50,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 10000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 20000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 50000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 100000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          }
         ]
       },
       defaultProductTypes: [],
@@ -514,6 +553,33 @@ export default {
             productType: 'TEST',
             discount: 0
           },
+        ],
+        appleStoreDiscount: [
+          {
+            amount: 50,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 10000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 20000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 50000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          },
+          {
+            amount: 100000,
+            productType: 'APPLE_STORE',
+            discount: 0
+          }
         ]
       }
     },

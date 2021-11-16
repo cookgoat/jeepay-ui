@@ -20,6 +20,12 @@
               <a-radio :value="'CTRIP'">
                 携程任我行
               </a-radio>
+              <a-radio :value="'SINOPEC'">
+                石化
+              </a-radio>
+              <a-radio :value="'APPLE_STORE'">
+                苹果商店
+              </a-radio>
             </a-radio-group>
           </a-form-model-item>
         </a-col>

@@ -212,6 +212,8 @@ const tableColumns = [
             return '携程任我行'
           case 'TEST_PRODUCT':
             return '测试产品'
+          case 'APPLE_STORE':
+            return '苹果商店'
         }
       } else {
         return ''

@@ -888,7 +888,8 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
-          item['pendingCount'] = item['pendingCount'] / 100
+          // eslint-disable-next-line no-self-assign
+          item['pendingCount'] = item['pendingCount']
         })
         this.JDOrderData = res
       })
@@ -898,7 +899,8 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
-          item['pendingCount'] = item['pendingCount'] / 100
+          // eslint-disable-next-line no-self-assign
+          item['pendingCount'] = item['pendingCount']
         })
         this.CTRIPOrderData = res
       })
@@ -908,7 +910,8 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
-          item['pendingCount'] = item['pendingCount'] / 100
+          // eslint-disable-next-line no-self-assign
+          item['pendingCount'] = item['pendingCount']
         })
         this.SINOPECOrderData = res
       })
@@ -918,7 +921,8 @@ export default {
         res.forEach(item => {
           item['faceAmount'] = item['faceAmount'] / 100
           item['allAmount'] = item['allAmount'] / 100
-          item['pendingCount'] = item['pendingCount'] / 100
+          // eslint-disable-next-line no-self-assign
+          item['pendingCount'] = item['pendingCount']
         })
         this.PETROOrderData = res
       })

@@ -28,6 +28,11 @@ export default {
           name: '测试产品',
           rate: 'testDiscount'
         },
+        {
+          value: 'APPLE_STORE',
+          name: '测试产品',
+          rate: 'appleStoreDiscount'
+        }
       ],
       // 业务类型
       serviceTypeList: [
@@ -177,6 +182,6 @@ export default {
     dateFormatMills (s) {
       const date = new Date(parseInt(s))
       return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-    }
+    },
   }
 }
